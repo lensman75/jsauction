@@ -10,8 +10,9 @@
   <title>Document</title>
   <link rel="stylesheet" href="styles/custom.css">
 </head>
-<body onload="moddisp()">
-  <div id="myModal" class="modal">
+<body onload="loadLoginModal()">
+  <!--Login modal-->
+  <div id="login_modal" class="modal">
     <div class="modal-content">
       <span class="close">&times;</span>
       <form action="" id="ab">
@@ -30,9 +31,11 @@
         <span id="gotoregister" onclick="closeLogin()">SignUp</span>
       </form>
     </div>
+  </div>
 
-
-    <div class="modal-reg" id="abc">
+  <!--Registration modal-->
+  <div id="myRegistration" class="modal">
+    <div class="modal-content" id="abc">
       <span class="close">&times;</span>
       <form action="" id="abb">
         <div>
@@ -45,14 +48,48 @@
           <input type="password">
         </div>
         <br>
-        <input type="button" value="Login" onclick="loginError()">
+        <div>
+          <label>Repeat password</label>
+          <input type="password">
+        </div>
+        <input type="button" value="Register account" onclick="closeRegistration()">
         <br>
         <!--<span id="gotoregister" onclick="goRegistration()">SignUp</span>-->
       </form>
     </div>
   </div>
 
-  <script src="script/loginModal.js"></script>
-  <script src="script/registrationModal.js"></script>
+  <!--Welcome modal-->
+  <div id="myWelcome" class="modal">
+    <div class="modal-content" id="abcc">
+      <span class="close">&times;</span>
+      <div id="userInfo">
+
+      </div>
+      <!--<form action="" id="abbb">-->
+        <!--<div>-->
+          <!--<label>Login</label>-->
+          <!--<input type="text">-->
+        <!--</div>-->
+        <!--<br>-->
+        <!--<div>-->
+          <!--<label>Password</label>-->
+          <!--<input type="password">-->
+        <!--</div>-->
+        <!--<br>-->
+        <!--<div>-->
+          <!--<label>Repeat password</label>-->
+          <!--<input type="password">-->
+        <!--</div>-->
+        <!--<input type="button" value="Log out">-->
+        <!--<br>-->
+        <!--&lt;!&ndash;<span id="gotoregister" onclick="goRegistration()">SignUp</span>&ndash;&gt;-->
+      <!--</form>-->
+    </div>
+  </div>
+
+  <script defer src="script/loginModal.js"></script>
+  <script defer src="script/registrationModal.js"></script>
+  <script defer src="script/welcomeModal.js"></script>
 </body>
 </html>

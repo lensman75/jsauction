@@ -1,6 +1,7 @@
-var modal = document.getElementById('myModal');
+var modal = document.getElementById('login_modal');
 var span = document.getElementsByClassName("close")[0];
-function moddisp() {
+
+function loadLoginModal() {
   modal.style.display = "block";
 }
 // When the user clicks on <span> (x), close the modal
