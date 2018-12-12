@@ -62,6 +62,8 @@ function handleLogin() {
   var userName = loginForm[0].value;
   var userPassword = loginForm[1].value;
   for (var i = 0; i < allusers.length; i++) {
+    console.log(userName, allusers[i].name);
+    console.log(userPassword, allusers[i].pass);
     if (userName == allusers[i].name && userPassword == allusers[i].pass) {
       loadWelcomeModal();
       document.getElementById("userInfo").innerHTML = "Hello " + userName;
@@ -77,33 +79,32 @@ function handleRegistration() {
   loadRegisterModal();
 }
 
+function userExists(users, name) {
+  for (var i = 0; i < users.length; i++) {
+    if(users[i].name == name) {
+      return true;
+    }
+  }
+  return false;
+}
+
 function handleUserCreation() {
   var registrationForm = document.getElementById("abb");
   var name = registrationForm[0].value;
   var password = registrationForm[1].value;
   var repeatpass = registrationForm[2].value;
-  if (password == repeatpass) {
-    currentUser = User.register(name, password);
-  } else {
+  if (password != repeatpass) {
     alert("Passwords you entered are not identical");
+    return;
   }
-
-  if (allusers.length == 0) {
+  if (!userExists(allusers,name)) {
+    currentUser = User.register(name, password);
     allusers.push(currentUser);
-    loadLoginModal();
+    console.log(allusers);
     alert("Welcome to auction! Now you can have fun!");
+    loadLoginModal();
   }
   else {
-    for (var i = 0; i < allusers.length; i++) {
-      if (!(allusers[i].name.includes(currentUser.name))) {
-        allusers.push(currentUser);
-        alert("Welcome to auction! Now you can have fun!");
-        loadLoginModal();
-        break;
+    alert("This Name already exist. You can choose another Name or restore password if you forget!");
       }
-      else {
-        alert("This Name already exist. You can choose another Name or restore password if you forget!");
-      }
-    }
-  }
 }
