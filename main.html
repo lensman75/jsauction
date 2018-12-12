@@ -15,7 +15,7 @@
   <div id="login_modal" class="modal">
     <div class="modal-content">
       <span class="close">&times;</span>
-      <form action="" id="ab">
+      <form action="" id="loginForm">
         <div>
           <label>Login</label>
           <input type="text">
@@ -26,15 +26,18 @@
           <input type="password">
         </div>
         <br>
-        <input type="button" value="Login" onclick="loginError()">
-        <br>
-        <span id="gotoregister" onclick="closeLogin()">SignUp</span>
+        <input type="button" value="Login" onclick="handleLogin()">
+        <!--<input type="button" value="SignUp" onclick="loadRegisterModal()">-->
+        <hr>
+        <span>Don't have an account? </span>
+        <span onclick="handleRegistration()"><>SignUp<></span>
+        <footer id="mainFooter"></footer>
       </form>
     </div>
   </div>
 
   <!--Registration modal-->
-  <div id="myRegistration" class="modal">
+  <div id="registration_modal" class="modal">
     <div class="modal-content" id="abc">
       <span class="close">&times;</span>
       <form action="" id="abb">
@@ -52,44 +55,27 @@
           <label>Repeat password</label>
           <input type="password">
         </div>
-        <input type="button" value="Register account" onclick="closeRegistration()">
+        <input type="button" value="Register account" onclick="handleUserCreation()">
         <br>
-        <!--<span id="gotoregister" onclick="goRegistration()">SignUp</span>-->
+        <button onclick="handleLogin()">Cancel registration!</button>
       </form>
     </div>
   </div>
 
   <!--Welcome modal-->
-  <div id="myWelcome" class="modal">
+  <div id="welcome_modal" class="modal">
     <div class="modal-content" id="abcc">
       <span class="close">&times;</span>
       <div id="userInfo">
-
       </div>
-      <!--<form action="" id="abbb">-->
-        <!--<div>-->
-          <!--<label>Login</label>-->
-          <!--<input type="text">-->
-        <!--</div>-->
-        <!--<br>-->
-        <!--<div>-->
-          <!--<label>Password</label>-->
-          <!--<input type="password">-->
-        <!--</div>-->
-        <!--<br>-->
-        <!--<div>-->
-          <!--<label>Repeat password</label>-->
-          <!--<input type="password">-->
-        <!--</div>-->
-        <!--<input type="button" value="Log out">-->
-        <!--<br>-->
-        <!--&lt;!&ndash;<span id="gotoregister" onclick="goRegistration()">SignUp</span>&ndash;&gt;-->
-      <!--</form>-->
+      <div id="userBalance">
+      </div>
+      <div id="userItems">
+      </div>
+      <button onclick="loadLoginModal()">Logout!</button>
     </div>
   </div>
 
-  <script defer src="script/loginModal.js"></script>
-  <script defer src="script/registrationModal.js"></script>
-  <script defer src="script/welcomeModal.js"></script>
+  <script defer src="script/main.js"></script>
 </body>
 </html>

@@ -16,9 +16,10 @@ window.onclick = function(event) {
 }
 //LoginError
 function loginError() {
-  var para = document.createElement("footer");
-  var node = document.createTextNode("Login error, please do something");
-  var modalContent = document.getElementById('ab');
-  para.appendChild(node);
-  modalContent.appendChild(para);
+  // var para = document.createElement("footer");
+  // var node = document.createTextNode("Login error, please do something");
+  // var modalContent = document.getElementById('ab');
+  // para.appendChild(node);
+  // modalContent.appendChild(para);
+  document.getElementById("mainFooter").innerHTML = "Login error!";
 }
