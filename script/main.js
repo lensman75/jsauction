@@ -7,6 +7,7 @@ var spanModalCloseWelcome = document.getElementsByClassName("close")[2];
 var currentUser;
 var allusers = [];
 var itemsList = [];
+var activeList = [];
 
 // // When the user clicks on <span> (x), close the modal
 spanModalCloseLogin.onclick = function() {
@@ -119,9 +120,23 @@ function addText() {
 function renderList(items) {
   var h = "";
   for (var i = 0; i < items.length; i++) {
-    h += "<li>" +i + "---" + items[i] + "<button onclick=\"deleteElementFromList("+i+")\">Delete</button>" + "</li>";
+    h += "<li>" +i + "---" + items[i] + "<button onclick=\"deleteElementFromList("+i+")\">Delete</button>" + "<button onclick=\"startAuction("+i+")\">Start auction</button>" + "</li>";
   }
   document.getElementById("itemList").innerHTML = h;
+}
+
+function renderStartAuction(items) {
+  var h = "";
+  for (var i = 0; i < items.length; i++) {
+    h += "<li>" + i + "---" + items[i] + "</li>";
+  }
+  document.getElementById("startedLot").innerHTML = h;
+}
+
+function startAuction(i) {
+  activeList.push(itemsList[i]);
+  deleteElementFromList(i);
+  renderStartAuction(activeList);
 }
 
 function deleteElementFromList(i) {
