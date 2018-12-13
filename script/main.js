@@ -6,6 +6,7 @@ var spanModalCloseRegistration = document.getElementsByClassName("close")[1];
 var spanModalCloseWelcome = document.getElementsByClassName("close")[2];
 var currentUser;
 var allusers = [];
+var itemsList = [];
 
 // // When the user clicks on <span> (x), close the modal
 spanModalCloseLogin.onclick = function() {
@@ -107,4 +108,23 @@ function handleUserCreation() {
   else {
     alert("This Name already exist. You can choose another Name or restore password if you forget!");
       }
+}
+
+function addText() {
+  var userText = document.getElementById("userText").value;
+  itemsList.push(userText);
+  renderList(itemsList);
+}
+
+function renderList(items) {
+  var h = "";
+  for (var i = 0; i < items.length; i++) {
+    h += "<li>" +i + "---" + items[i] + "<button onclick=\"deleteElementFromList("+i+")\">Delete</button>" + "</li>";
+  }
+  document.getElementById("itemList").innerHTML = h;
+}
+
+function deleteElementFromList(i) {
+  itemsList.splice(i,1);
+  renderList(itemsList);
 }
