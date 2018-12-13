@@ -120,26 +120,53 @@ function addText() {
 function renderList(items) {
   var h = "";
   for (var i = 0; i < items.length; i++) {
-    h += "<li>" +i + "---" + items[i] + "<button onclick=\"deleteElementFromList("+i+")\">Delete</button>" + "<button onclick=\"startAuction("+i+")\">Start auction</button>" + "</li>";
+    h += "<li>" +i + "---" + items[i] + "<button onclick=\"deleteElementFromList("+i+")\">Delete</button>" + "<button onclick=\"startAuction("+i+");timer(" + i + ")\">Start auction</button>" + "</li>";
   }
   document.getElementById("itemList").innerHTML = h;
 }
 
 function renderStartAuction(items) {
   var h = "";
+  var spanTimer = "<span class=\"spanTimer\"></span>";
   for (var i = 0; i < items.length; i++) {
-    h += "<li>" + i + "---" + items[i] + "</li>";
+    h += "<li>" + i + " --- " + items[i] +" " +spanTimer + " "+"<button onclick=\"stopAuction("+i+")\">Stop" +
+        " auction</button>" +"</li>";
   }
   document.getElementById("startedLot").innerHTML = h;
 }
 
+
+function timer(i) {
+  var timeleft = 20;
+  var downloadTimer = setInterval(function(){
+    timeleft--;
+    document.getElementsByClassName("spanTimer")[i].innerHTML = timeleft;
+    if(timeleft <= 0)
+      clearInterval(downloadTimer);
+  },1000);
+}
+
 function startAuction(i) {
   activeList.push(itemsList[i]);
+  // timer(i);
   deleteElementFromList(i);
   renderStartAuction(activeList);
+  // timer(i);
+}
+
+function stopAuction(i) {
+  itemsList.push(activeList[i]);
+  deleteElementFromAuction(i);
+  renderStartAuction(activeList);
+  renderList(itemsList);
 }
 
 function deleteElementFromList(i) {
   itemsList.splice(i,1);
   renderList(itemsList);
+}
+
+function deleteElementFromAuction(i) {
+  activeList.splice(i,1);
+  renderStartAuction(activeList);
 }

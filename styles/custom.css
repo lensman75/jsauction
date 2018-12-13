@@ -36,5 +36,10 @@
 
 #lotList {
   display: flex; }
+  #lotList #itemList {
+    width: 250px;
+    margin-right: 15px; }
+  #lotList #startedLot {
+    width: 250px; }
 
 /*# sourceMappingURL=custom.css.map */
