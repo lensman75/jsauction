@@ -75,8 +75,28 @@
     </div>
   </div>
 
-  <input id="userText" type="text">
-  <button onclick="addText()">addItem</button>
+  <!--Add item modal-->
+  <div id="addItem_modal" class="modal">
+    <div class="modal-content" id="">
+      <span class="close">&times;</span>
+      <div class="modal-field">
+        <form class="modal-field" id="addItemDetails">
+          <label for="">Item name</label>
+          <input type="text">
+          <label for="">Item start price</label>
+          <input type="text">
+          <label for="">Item lowest price</label>
+          <input type="text">
+          <label for="">Auction duration</label>
+          <input type="text">
+        </form>
+      </div>
+      <button onclick="cancelAddItem()">Cancel!</button>
+      <button onclick="addItem()">Add item!</button>
+    </div>
+  </div>
+
+  <button onclick="loadAddItemModal()">addItem</button>
   <div id="lotList">
     <ul id="itemList"></ul>
     <ul id="startedLot">

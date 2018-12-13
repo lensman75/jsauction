@@ -16,7 +16,7 @@
   margin: auto;
   padding: 20px;
   border: 1px solid #888;
-  width: 30%; }
+  width: 80%; }
 
 .modal-reg {
   display: none; }
@@ -35,11 +35,22 @@
   cursor: pointer; }
 
 #lotList {
-  display: flex; }
+  display: flex;
+  flex-direction: column; }
   #lotList #itemList {
-    width: 250px;
+    width: 70%;
     margin-right: 15px; }
   #lotList #startedLot {
-    width: 250px; }
+    width: 70%; }
+
+.modal-field {
+  display: flex;
+  flex-direction: column; }
+  .modal-field label, .modal-field input {
+    margin: 3px; }
+
+table, th, tbody, tr, td {
+  border-collapse: collapse;
+  border: 1px solid mediumpurple; }
 
 /*# sourceMappingURL=custom.css.map */

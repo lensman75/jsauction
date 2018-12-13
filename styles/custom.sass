@@ -16,7 +16,7 @@
   margin: auto
   padding: 20px
   border: 1px solid #888
-  width: 30%
+  width: 80%
 
 .modal-reg
   display: none
@@ -36,8 +36,19 @@
 
 #lotList
   display: flex
+  flex-direction: column
   #itemList
-    width: 250px
+    width: 70%
     margin-right: 15px
   #startedLot
-    width: 250px
+    width: 70%
+
+.modal-field
+  display: flex
+  flex-direction: column
+  label, input
+    margin: 3px
+
+table, th, tbody, tr, td
+  border-collapse: collapse
+  border: 1px solid mediumpurple
