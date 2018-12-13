@@ -19,8 +19,6 @@ spanModalCloseRegistration.onclick = function() {
 spanModalCloseWelcome.onclick = function() {
   welcomeModal.style.display = "none";
 };
-
-
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
   if (event.target == loginModal || event.target == registerModal || event.target == welcomeModal) {
@@ -47,6 +45,7 @@ function loadLoginModal() {
   loginModal.style.display = "block";
   registerModal.style.display = "none";
   welcomeModal.style.display = "none";
+  document.getElementById("mainFooter").innerHTML = "";
 }
 function loadRegisterModal() {
   loginModal.style.display = "none";
@@ -59,23 +58,28 @@ function loadWelcomeModal() {
   welcomeModal.style.display = "block";
 }
 
+function userLoginExist (users, name, pass) {
+  for (var i = 0; i < users.length; i++) {
+    if (users[i].name == name && users[i].pass == pass){
+      return true;
+    }
+  }
+  return false;
+}
+
 function handleLogin() {
   var loginForm = document.getElementById("loginForm");
   var userName = loginForm[0].value;
   var userPassword = loginForm[1].value;
-  for (var i = 0; i < allusers.length; i++) {
-    console.log(userName, allusers[i].name);
-    console.log(userPassword, allusers[i].pass);
-    if (userName == allusers[i].name && userPassword == allusers[i].pass) {
-      loadWelcomeModal();
-      document.getElementById("userInfo").innerHTML = "Hello " + userName;
-      document.getElementById("userBalance").innerHTML = "Your balance " + "1000" + "$";
-      break;
-    } else {
-      document.getElementById("mainFooter").innerHTML = "Login error"
-    }
+  if (userLoginExist(allusers, userName, userPassword)) {
+    loadWelcomeModal();
+    document.getElementById("userInfo").innerHTML = "Hello " + userName;
+    document.getElementById("userBalance").innerHTML = "Your balance " + "1000" + "$";
   }
-};
+  else {
+      document.getElementById("mainFooter").innerHTML = "Login error"
+  }
+}
 
 function handleRegistration() {
   loadRegisterModal();
@@ -104,6 +108,7 @@ function handleUserCreation() {
     allusers.push(currentUser);
     console.log(allusers);
     alert("Welcome to auction! Now you can have fun!");
+    document.getElementById("mainFooter").innerHTML = "";
     loadLoginModal();
   }
   else {
@@ -120,42 +125,41 @@ function addText() {
 function renderList(items) {
   var h = "";
   for (var i = 0; i < items.length; i++) {
-    h += "<li>" +i + "---" + items[i] + "<button onclick=\"deleteElementFromList("+i+")\">Delete</button>" + "<button onclick=\"startAuction("+i+");timer(" + i + ")\">Start auction</button>" + "</li>";
+    h += "<li>" +i + "---" + items[i] + "<button onclick=\"deleteElementFromList("+i+")\">Delete</button>" + "<button onclick=\"startAuction("+i+")\">Start auction</button>" + "</li>";
   }
   document.getElementById("itemList").innerHTML = h;
 }
 
 function renderStartAuction(items) {
   var h = "";
-  var spanTimer = "<span class=\"spanTimer\"></span>";
+  // var spanTimer = "<span class=\"spanTimer\"></span>";
   for (var i = 0; i < items.length; i++) {
-    h += "<li>" + i + " --- " + items[i] +" " +spanTimer + " "+"<button onclick=\"stopAuction("+i+")\">Stop" +
+    h += "<li>" + i + " --- " + items[i].item +" left" +items[i].time + " "+"<button onclick=\"stopAuction("+i+")\">Stop" +
         " auction</button>" +"</li>";
   }
   document.getElementById("startedLot").innerHTML = h;
 }
 
-
-function timer(i) {
-  var timeleft = 20;
-  var downloadTimer = setInterval(function(){
-    timeleft--;
-    document.getElementsByClassName("spanTimer")[i].innerHTML = timeleft;
-    if(timeleft <= 0)
-      clearInterval(downloadTimer);
-  },1000);
+function stepTime() {
+  for (var i =0; i < activeList.length; i++){
+    if (activeList[i].time > 0) {
+      activeList[i].time -= 1;
+    }
+  }
 }
+setInterval(function () {
+  stepTime();
+  renderStartAuction(activeList);
+}, 1000);
 
 function startAuction(i) {
-  activeList.push(itemsList[i]);
-  // timer(i);
+  activeList.push({"item": itemsList[i],"time": 20});
   deleteElementFromList(i);
   renderStartAuction(activeList);
-  // timer(i);
 }
 
 function stopAuction(i) {
-  itemsList.push(activeList[i]);
+  itemsList.push(activeList[i].item);
   deleteElementFromAuction(i);
   renderStartAuction(activeList);
   renderList(itemsList);
