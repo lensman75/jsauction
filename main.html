@@ -56,7 +56,8 @@
         </div>
         <input type="button" value="Register account" onclick="handleUserCreation()">
         <br>
-        <button onclick="handleLogin()">Cancel registration!</button>
+        <!--<button onclick="cancelUserRegistration()">Cancel registration!</button>-->
+        <input type="button" value="Cancel registration" onclick="cancelUserRegistration()">
       </form>
     </div>
   </div>
@@ -77,17 +78,15 @@
 
   <!--Add item modal-->
   <div id="addItem_modal" class="modal">
-    <div class="modal-content" id="">
+    <div class="modal-content">
       <span class="close">&times;</span>
       <div class="modal-field">
         <form class="modal-field" id="addItemDetails">
-          <label for="">Item name</label>
+          <label>Item name</label>
           <input type="text">
-          <label for="">Item start price</label>
+          <label>Description</label>
           <input type="text">
-          <label for="">Item lowest price</label>
-          <input type="text">
-          <label for="">Auction duration</label>
+          <label>Image</label>
           <input type="text">
         </form>
       </div>
@@ -95,6 +94,34 @@
       <button onclick="addItem()">Add item!</button>
     </div>
   </div>
+
+  <!--Start auction modal-->
+  <div id="startAuction_modal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <div class="modal-field">
+        <form class="modal-field" id="startAuctionDetailes">
+          <label>Name</label>
+          <input type="text" readonly="readonly">
+          <label>Description</label>
+          <input type="text">
+          <label>Start price</label>
+          <input type="text">
+          <label>Final price</label>
+          <input type="text">
+          <label>Auction duration</label>
+          <input type="text">
+          <label>Image</label>
+          <input type="text">
+          <input type="button" value="Start" onclick="startAuction()">
+          <input type="button" value="Cancel auction" onclick="cancelAuctionModal()">
+        </form>
+      </div>
+      <!--<button onclick="cancelAddItem()">Cancel!</button>-->
+    </div>
+  </div>
+
+
 
   <button onclick="loadAddItemModal()">addItem</button>
   <div id="lotList">

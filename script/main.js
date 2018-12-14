@@ -2,6 +2,7 @@ var loginModal = document.getElementById('login_modal');
 var registerModal = document.getElementById("registration_modal");
 var welcomeModal = document.getElementById("welcome_modal");
 var addItemModal = document.getElementById("addItem_modal");
+var startAuctionModal = document.getElementById("startAuction_modal");
 var spanModalCloseLogin = document.getElementsByClassName("close")[0];
 var spanModalCloseRegistration = document.getElementsByClassName("close")[1];
 var spanModalCloseWelcome = document.getElementsByClassName("close")[2];
@@ -10,6 +11,7 @@ var currentUser;
 var allusers = [];
 var itemsList = [];
 var activeList = [];
+var pendingAuctionItemId;
 
 // // When the user clicks on <span> (x), close the modal
 spanModalCloseLogin.onclick = function() {
@@ -26,11 +28,12 @@ spanModalCloseAddItem.onclick = function() {
 }
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
-  if (event.target == loginModal || event.target == registerModal || event.target == welcomeModal || event.target == addItemModal) {
+  if (event.target == loginModal || event.target == registerModal || event.target == welcomeModal || event.target == addItemModal || event.target == startAuctionModal) {
     loginModal.style.display = "none";
     registerModal.style.display = "none";
     welcomeModal.style.display = "none";
     addItemModal.style.display = "none";
+    startAuctionModal.style.display = "none";
   }
 };
 
@@ -71,6 +74,25 @@ function loadAddItemModal() {
 }
 function cancelAddItem() {
   addItemModal.style.display = "none";
+}
+function cancelUserRegistration() {
+  registerModal.style.display = "none";
+  loginModal.style.display = "block";
+}
+function cancelAuctionModal() {
+  startAuctionModal.style.display = "none";
+  pendingAuctionItemId = null;
+}
+function showAuctionModal(i) {
+  startAuctionModal.style.display = "block";
+  var auctionDetails = document.getElementById("startAuctionDetailes");
+  var name = auctionDetails[0].value = itemsList[i].name;
+  var description = auctionDetails[1].value = itemsList[i].description;
+  var imaage = auctionDetails[5].value = itemsList[i].image;
+  var start_price = auctionDetails[2].value = 500;
+  var finish_price = auctionDetails[3].value = 50;
+  var auction_duration = auctionDetails[4].value = 15;
+  pendingAuctionItemId = i;
 }
 
 function userLoginExist (users, name, pass) {
@@ -132,16 +154,13 @@ function handleUserCreation() {
 }
 
 function addItem() {
-  // var userText = document.getElementById("userText").value;
   var itemName = document.getElementById("addItemDetails")[0].value;
-  var itemStartPrice = document.getElementById("addItemDetails")[1].value;
-  var itemLowestPrice = document.getElementById("addItemDetails")[2].value;
-  var itemAuctionDuration = document.getElementById("addItemDetails")[3].value;
+  var itemDescription = document.getElementById("addItemDetails")[1].value;
+  var itemImage = document.getElementById("addItemDetails")[2].value;
   itemsList.push({
     "name":itemName,
-    "start_price":itemStartPrice,
-    "finish_price":itemLowestPrice,
-    "auction_duration":itemAuctionDuration
+    "description":itemDescription,
+    "image":itemImage,
   });
   renderList(itemsList);
 }
@@ -149,24 +168,20 @@ function addItem() {
 function renderList(items) {
   var h = "<table>" ;
   h += "<thead><tr>";
-  h += "<th>N</th>";
   h += "<th>Item name</th>";
-  h += "<th>Start price</th>";
-  h += "<th>Finish price</th>";
-  h += "<th>Auction duration</th>";
+  h += "<th>Description</th>";
+  h += "<th>Image</th>";
   h += "<th>Start auction</th>";
   h += "<th>Delete item</th>";
   h += "<tbody>";
   for (var i = 0; i < items.length; i++) {
     h+= "<tr>";
-    h+= "<td>" + i + "</td>";
     h+= "<td>" + items[i].name + "</td>";
-    h+= "<td>" + items[i].start_price + "</td>";
-    h+= "<td>" + items[i].finish_price + "</td>";
-    h+= "<td>" + items[i].auction_duration + "</td>";
-    h+= "<td><button onclick=\"startAuction("+i+")\">Start auction</button>"
+    h+= "<td>" + items[i].description + "</td>";
+    h+= "<td>" + items[i].image + "</td>";
+    // h+= "<td><button onclick=\"startAuction("+i+")\">Start auction</button>"
+    h+= "<td><button onclick=\"showAuctionModal("+i+")\">Start auction</button>"
     h+= "<td><button onclick=\"deleteElementFromList("+i+")\">Delete item</button>";
-    // h += "<li>" +i+ "-" + items[i].name + "<button onclick=\"deleteElementFromList("+i+")\">Delete</button>" + "<button onclick=\"startAuction("+i+")\">Start auction</button>" + "</li>";
   }
   document.getElementById("itemList").innerHTML = h;
 }
@@ -174,7 +189,6 @@ function renderList(items) {
 function renderStartAuction(items) {
   var h = "<table>" ;
   h += "<thead><tr>";
-  h += "<th>N</th>";
   h += "<th>Item name</th>";
   h += "<th>Time left</th>";
   h += "<th>Current price</th>";
@@ -183,8 +197,6 @@ function renderStartAuction(items) {
   h += "<tbody>";
   for (var i = 0; i < items.length; i++) {
     h+= "<tr>";
-    // h += "<li>" + i + " --- " + items[i].item +" left" +items[i].time + " "+"<button onclick=\"stopAuction("+i+")\">Stop auction</button>"+"</li>";
-    h += "<td>" + i + "</td>";
     h += "<td>" + items[i].name + "</td>";
     h += "<td>" + items[i].left_time + "</td>";
     h += "<td>" + items[i].current_price + "</td>";
@@ -211,19 +223,28 @@ setInterval(function () {
   renderStartAuction(activeList);
 }, 1000);
 
-function startAuction(i) {
-  // activeList.push({"item": itemsList[i],"time": 20});
+function startAuction() {
+  var auctionDetails = document.getElementById("startAuctionDetailes");
+  var name = auctionDetails[0].value;
+  var description = auctionDetails[1].value;
+  var image = auctionDetails[5].value;
+  var start_price = auctionDetails[2].value;
+  var finish_price = auctionDetails[3].value;
+  var auction_duration = auctionDetails[4].value;
   activeList.push({
-    "name": itemsList[i].name,
-    "duration": itemsList[i].auction_duration,
-    "left_time": itemsList[i].auction_duration,
-    "max_price":itemsList[i].start_price,
-    "current_price":itemsList[i].start_price,
-    "minimal_price":itemsList[i].finish_price
+    "name": name,
+    "description": description,
+    "image": image,
+    "current_price" : start_price,
+    "left_time" : auction_duration,
+    "duration" : auction_duration,
+    "max_price" : start_price,
+    "minimal_price" : finish_price
   });
-  console.log({"name": itemsList[i].name,"left_time": itemsList[i].auction_duration, "current_price":itemsList[i].start_price,"minimal_price":itemsList[i].finish_price});
-  deleteElementFromList(i);
+  // console.log({"name": itemsList[i].name,"left_time": itemsList[i].auction_duration, "current_price":itemsList[i].start_price,"minimal_price":itemsList[i].finish_price});
+  deleteElementFromList(pendingAuctionItemId);
   renderStartAuction(activeList);
+  startAuctionModal.style.display = "none";
 }
 
 //"name":itemName,"start_price":itemStartPrice,"finish_price":itemLowestPrice, "auction_duration":itemAuctionDuration
@@ -231,9 +252,8 @@ function startAuction(i) {
 function stopAuction(i) {
   itemsList.push({
     "name":activeList[i].name,
-    "start_price":activeList[i].max_price,
-    "finish_price":activeList[i].minimal_price,
-    "auction_duration":activeList[i].duration
+    "description" : activeList[i].description,
+    "image" : activeList[i].image
   });
   deleteElementFromAuction(i);
   renderStartAuction(activeList);
