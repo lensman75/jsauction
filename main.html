@@ -122,7 +122,9 @@
     </div>
   </div>
 
-  <button onclick="loadAddItemModal()">addItem</button>
+  <button id="loginButton" onclick="loadLoginModal()">Login</button>
+  <button style="display:none" id="logoutButton" onclick="handleLogout()">Logout</button>
+  <button style="display:none" id="addItemButton" onclick="loadAddItemModal()">addItem</button>
   <div id="lotList">
     <ul id="itemList"></ul>
     <ul id="startedLot"></ul>

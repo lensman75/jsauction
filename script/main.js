@@ -7,12 +7,11 @@ var spanModalCloseLogin = document.getElementsByClassName("close")[0];
 var spanModalCloseRegistration = document.getElementsByClassName("close")[1];
 var spanModalCloseWelcome = document.getElementsByClassName("close")[2];
 var spanModalCloseAddItem = document.getElementsByClassName("close")[3];
-var currentUser;
+var currentUser = null;
 var allusers = [];
 var itemsList = [];
 var activeList = [];
 var pendingAuctionItemId;
-var templist = [];
 
 // // When the user clicks on <span> (x), close the modal
 spanModalCloseLogin.onclick = function() {
@@ -51,8 +50,8 @@ class User {
   }
 
   static register(...args){
-      return new User(...args);
-    }
+    return new User(...args);
+  }
 }
 
 function loadLoginModal() {
@@ -110,6 +109,15 @@ function userLoginExist (users, name, pass) {
   return false;
 }
 
+function getUserByName(users, name) {
+  for (var i = 0; i < users.length; i++){
+    if (users[i].name == name){
+      return users[i];
+    }
+  }
+  return null;
+}
+
 function handleLogin() {
   var loginForm = document.getElementById("loginForm");
   var userName = loginForm[0].value;
@@ -118,10 +126,25 @@ function handleLogin() {
     loadWelcomeModal();
     document.getElementById("userInfo").innerHTML = "Hello " + userName;
     document.getElementById("userBalance").innerHTML = "Your balance " + "1000" + "$";
+    currentUser = getUserByName(allusers,userName);
+    console.log(currentUser);
+    itemsList = currentUser.items;
+    document.getElementById("logoutButton").style.display = "block";
+    document.getElementById("addItemButton").style.display = "block";
+    renderList(itemsList);
   }
   else {
       document.getElementById("mainFooter").innerHTML = "Login error"
   }
+}
+
+function handleLogout() {
+  currentUser.items = itemsList;
+  itemsList = [];
+  currentUser = null;
+  document.getElementById("logoutButton").style.display = "none";
+  document.getElementById("addItemButton").style.display = "none";
+  renderList(itemsList);
 }
 
 function handleRegistration() {
@@ -147,7 +170,7 @@ function handleUserCreation() {
     return;
   }
   if (!userExists(allusers,name)) {
-    currentUser = User.register(name, password);
+    var currentUser = User.register(name, password);
     allusers.push(currentUser);
     console.log(allusers);
     alert("Welcome to auction! Now you can have fun!");
