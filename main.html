@@ -10,7 +10,7 @@
   <title>Document</title>
   <link rel="stylesheet" href="styles/custom.css">
 </head>
-<body onload="loadLoginModal()">
+<body>
   <!--Login modal-->
   <div id="login_modal" class="modal">
     <div class="modal-content">
@@ -122,11 +122,15 @@
     </div>
   </div>
 
-  <button id="loginButton" onclick="loadLoginModal()">Login</button>
+  <button id="loginButton" style="display: block;" onclick="loadLoginModal()">Login</button>
   <button style="display:none" id="logoutButton" onclick="handleLogout()">Logout</button>
   <button style="display:none" id="addItemButton" onclick="loadAddItemModal()">addItem</button>
+  <div id="welcome_section" style="display: none;">
+    <span id="welcome_section_name">Admin</span>
+    <span id="welcome_section_balance">500 $</span>
+  </div>
   <div id="lotList">
-    <ul id="itemList"></ul>
+    <ul id="itemList" style="display: none;"></ul>
     <ul id="startedLot"></ul>
   </div>
 

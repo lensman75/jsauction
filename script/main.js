@@ -12,6 +12,7 @@ var allusers = [];
 var itemsList = [];
 var activeList = [];
 var pendingAuctionItemId;
+var nextUserId = 0;
 
 // // When the user clicks on <span> (x), close the modal
 spanModalCloseLogin.onclick = function() {
@@ -47,6 +48,8 @@ class User {
     this.pass = password;
     this.items = [];
     this.balance = 0;
+    this.id = nextUserId;
+    nextUserId += 1;
   }
 
   static register(...args){
@@ -123,14 +126,21 @@ function handleLogin() {
   var userName = loginForm[0].value;
   var userPassword = loginForm[1].value;
   if (userLoginExist(allusers, userName, userPassword)) {
-    loadWelcomeModal();
-    document.getElementById("userInfo").innerHTML = "Hello " + userName;
-    document.getElementById("userBalance").innerHTML = "Your balance " + "1000" + "$";
+    // loadWelcomeModal();
+    // document.getElementById("userInfo").innerHTML = "Hello " + userName;
+    // document.getElementById("userBalance").innerHTML = "Your balance " + "1000" + "$";
     currentUser = getUserByName(allusers,userName);
     console.log(currentUser);
     itemsList = currentUser.items;
     document.getElementById("logoutButton").style.display = "block";
     document.getElementById("addItemButton").style.display = "block";
+    document.getElementById("welcome_section").style.display = "block";
+    var un = document.getElementById("loginForm_login").value;
+    document.getElementById("welcome_section_name").innerHTML = "Hello " + currentUser.name;
+    document.getElementById("welcome_section_balance").innerHTML = "Your balance is 1000$";
+    document.getElementById("loginButton").style.display = "none";
+    document.getElementById("itemList").style.display = "block";
+    onLoginShowUsrComponents();
     renderList(itemsList);
   }
   else {
@@ -144,6 +154,9 @@ function handleLogout() {
   currentUser = null;
   document.getElementById("logoutButton").style.display = "none";
   document.getElementById("addItemButton").style.display = "none";
+  document.getElementById("loginButton").style.display = "block";
+  document.getElementById("welcome_section").style.display = "none";
+  document.getElementById("itemList").style.display = "none";
   renderList(itemsList);
 }
 
@@ -224,6 +237,7 @@ function renderStartAuction(items) {
   h += "<th>Minimal price</th>";
   h += "<th>Auction end time</th>";
   h += "<th>Stop auction</th>";
+  h += "<th>Buy item</th>";
   h += "<tbody>";
   for (var i = 0; i < items.length; i++) {
     h+= "<tr>";
@@ -232,10 +246,30 @@ function renderStartAuction(items) {
     h += "<td>" + items[i].current_price + "</td>";
     h += "<td>" + items[i].minimal_price + "</td>";
     h += "<td>" + items[i].duration + "</td>";
-    h += "<td><button onclick=\"stopAuction("+i+")\">Stop auction</button></td>";
+    //FIXME: Hide buttons when no registered user in system. Make "Stop auction" button work only if user, who
+    // clicked this button is the owner of that lot.
+    h += "<td><button class='usrControl' onclick=\"stopAuction("+i+")\">Stop" +
+        " auction</button></td>";
+    h += "<td><button class='usrControl' onclick=\"buyItem("+i+")\">Buy item</button></td>"
   }
   document.getElementById("startedLot").innerHTML = h;
 }
+
+function buyItem(i) {
+//  TODO Buy item function onclick
+  console.log(activeList[i]);
+  // return activeList[i];
+  activeList[i].item_owner_id = currentUser.id;
+}
+
+function onLoginShowUsrComponents () {
+  var x = document.getElementsByClassName("usrControl");
+  var i = 0;
+  for (i = 0; i < x.length; i++){
+    x[i].style.display = "block";
+  }
+}
+
 
 function stepTime() {
   var areItemsChanged = false;
@@ -251,19 +285,27 @@ function stepTime() {
     }
     if (activeList[i].duration > 1) {
       activeList[i].duration -= 1;
-      console.log(activeList[i].duration);
+      // console.log(activeList[i].duration);
     }
     else {
-      // alert("finita");
-      itemsList.push({
+      // itemsList.push({
+      //   "name" : activeList[i].name,
+      //   "description" : activeList[i].description,
+      //   "image" : activeList[i].image,
+      //   "ownerId" : activeList[i].item_owner_id
+      // });
+      //TODO Check this.
+      allusers[i].items.push({
         "name" : activeList[i].name,
         "description" : activeList[i].description,
         "image" : activeList[i].image
       });
       deleteElementFromAuction(i);
       areItemsChanged = true;
+
     }
   }
+
   if (areItemsChanged) {
     renderList(itemsList);
   }
@@ -274,14 +316,14 @@ setInterval(function () {
 }, 1000);
 
 function startAuction() {
-  var auctionDetails = document.getElementById("startAuctionDetailes");
-  var name = auctionDetails[0].value;
-  var description = auctionDetails[1].value;
-  var image = auctionDetails[6].value;
-  var start_price = auctionDetails[2].value;
-  var finish_price = auctionDetails[3].value;
-  var price_reduction_time = auctionDetails[4].value;
-  var auction_time = auctionDetails[5].value;
+  // var auctionDetails = document.getElementById("startAuctionDetailes");
+  var name = document.getElementById("startAuctionDetailes_name").value;
+  var description = document.getElementById("startAuctionDetailes_description").value;
+  var image = document.getElementById("startAuctionDetailes_item_image").value;
+  var start_price = document.getElementById("startAuctionDetailes_start_price").value;;
+  var finish_price = document.getElementById("startAuctionDetailes_final_price").value;
+  var price_reduction_time = document.getElementById("startAuctionDetailes_price_reduction_time").value;
+  var auction_time = document.getElementById("startAuctionDetailes_auction_time").value;
   activeList.push({
     "name": name,
     "description": description,
@@ -291,7 +333,8 @@ function startAuction() {
     "duration" : auction_time,
     "price_reduction" : price_reduction_time,
     "max_price" : start_price,
-    "minimal_price" : finish_price
+    "minimal_price" : finish_price,
+    "item_owner_id" : currentUser.id
   });
   deleteElementFromList(pendingAuctionItemId);
   renderStartAuction(activeList);
@@ -299,8 +342,14 @@ function startAuction() {
 }
 
 function stopAuction(i) {
-  itemsList.push({
-    "name":activeList[i].name,
+  // itemsList.push({
+  //   "name":activeList[i].name,
+  //   "description" : activeList[i].description,
+  //   "image" : activeList[i].image
+  // });
+  //TODO Check this.
+  allusers[i].items.push({
+    "name" : activeList[i].name,
     "description" : activeList[i].description,
     "image" : activeList[i].image
   });
