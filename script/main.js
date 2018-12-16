@@ -137,11 +137,14 @@ function handleLogin() {
     document.getElementById("welcome_section").style.display = "block";
     var un = document.getElementById("loginForm_login").value;
     document.getElementById("welcome_section_name").innerHTML = "Hello " + currentUser.name;
-    document.getElementById("welcome_section_balance").innerHTML = "Your balance is 1000$";
+    document.getElementById("welcome_section_balance").innerHTML = "Your balance is " + currentUser.balance + "$";
     document.getElementById("loginButton").style.display = "none";
     document.getElementById("itemList").style.display = "block";
-    onLoginShowUsrComponents();
+    document.getElementById("addUserFunds").style.display = "block";
+    // onLoginShowUsrComponents();
     renderList(itemsList);
+    renderUserName();
+    renderFunds();
   }
   else {
       document.getElementById("mainFooter").innerHTML = "Login error"
@@ -157,7 +160,28 @@ function handleLogout() {
   document.getElementById("loginButton").style.display = "block";
   document.getElementById("welcome_section").style.display = "none";
   document.getElementById("itemList").style.display = "none";
+  document.getElementById("addUserFunds").style.display = "none";
   renderList(itemsList);
+}
+
+function addFunds() {
+  if (currentUser != null) {
+    currentUser.balance += 1000;
+    renderFunds();
+    renderUserName();
+  }
+}
+
+function renderFunds() {
+  if (currentUser != null) {
+    document.getElementById("welcome_section_balance").innerHTML = "Your balance " + currentUser.balance + " $";
+  }
+}
+
+function renderUserName() {
+  if (currentUser != null) {
+    document.getElementById("welcome_section_name").innerHTML = "Hello " + currentUser.name + "!";
+  }
 }
 
 function handleRegistration() {
@@ -254,7 +278,11 @@ function renderStartAuction(items) {
       h += "<td></td>";
     }
     if (currentUser != null && !(currentUser.id == items[i].owner.id)){
-    h += "<td><button class=\"usrControl\" onclick=\"buyItem("+i+")\">Buy item</button></td>";}
+      var disableButton = "";
+      if (currentUser.balance < items[i].current_price){
+        disableButton = "disabled";
+      }
+    h += "<td><button class=\"usrControl\" onclick=\"buyItem("+i+")\"" + disableButton +">Buy item</button></td>";}
     else {
       h += "<td></td>";
     }
@@ -263,7 +291,9 @@ function renderStartAuction(items) {
 }
 
 function buyItem(i) {
-  if (currentUser != null) {
+  if (currentUser != null && currentUser.balance > activeList[i].current_price) {
+    activeList[i].owner.balance += activeList[i].current_price;
+    currentUser.balance -= activeList[i].current_price;
     currentUser.items.push({
       "name" : activeList[i].name,
       "description" : activeList[i].description,
@@ -272,9 +302,10 @@ function buyItem(i) {
     });
     deleteElementFromAuction(i);
     renderList(itemsList);
+    renderFunds();
   }
 }
-
+//TODO Delete this
 function onLoginShowUsrComponents () {
   var x = document.getElementsByClassName("usrControl");
   var i = 0;
