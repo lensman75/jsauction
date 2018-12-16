@@ -203,6 +203,7 @@ function addItem() {
     "name":itemName,
     "description":itemDescription,
     "image":itemImage,
+    "owner" : currentUser
   });
   renderList(itemsList);
 }
@@ -246,20 +247,32 @@ function renderStartAuction(items) {
     h += "<td>" + items[i].current_price + "</td>";
     h += "<td>" + items[i].minimal_price + "</td>";
     h += "<td>" + items[i].duration + "</td>";
-    //FIXME: Hide buttons when no registered user in system. Make "Stop auction" button work only if user, who
-    // clicked this button is the owner of that lot.
-    h += "<td><button class='usrControl' onclick=\"stopAuction("+i+")\">Stop" +
-        " auction</button></td>";
-    h += "<td><button class='usrControl' onclick=\"buyItem("+i+")\">Buy item</button></td>"
+    if (currentUser != null && currentUser.id == items[i].owner.id){
+    h += "<td><button class=\"usrControl\" onclick=\"stopAuction("+i+")\">Stop" +
+        " auction</button></td>"; }
+    else {
+      h += "<td></td>";
+    }
+    if (currentUser != null && !(currentUser.id == items[i].owner.id)){
+    h += "<td><button class=\"usrControl\" onclick=\"buyItem("+i+")\">Buy item</button></td>";}
+    else {
+      h += "<td></td>";
+    }
   }
   document.getElementById("startedLot").innerHTML = h;
 }
 
 function buyItem(i) {
-//  TODO Buy item function onclick
-  console.log(activeList[i]);
-  // return activeList[i];
-  activeList[i].item_owner_id = currentUser.id;
+  if (currentUser != null) {
+    currentUser.items.push({
+      "name" : activeList[i].name,
+      "description" : activeList[i].description,
+      "image" : activeList[i].image,
+      "owner": currentUser
+    });
+    deleteElementFromAuction(i);
+    renderList(itemsList);
+  }
 }
 
 function onLoginShowUsrComponents () {
@@ -288,21 +301,14 @@ function stepTime() {
       // console.log(activeList[i].duration);
     }
     else {
-      // itemsList.push({
-      //   "name" : activeList[i].name,
-      //   "description" : activeList[i].description,
-      //   "image" : activeList[i].image,
-      //   "ownerId" : activeList[i].item_owner_id
-      // });
-      //TODO Check this.
-      allusers[i].items.push({
+      activeList[i].owner.items.push({
         "name" : activeList[i].name,
         "description" : activeList[i].description,
-        "image" : activeList[i].image
+        "image" : activeList[i].image,
+        "owner": activeList[i].owner
       });
       deleteElementFromAuction(i);
       areItemsChanged = true;
-
     }
   }
 
@@ -310,6 +316,7 @@ function stepTime() {
     renderList(itemsList);
   }
 }
+
 setInterval(function () {
   stepTime();
   renderStartAuction(activeList);
@@ -334,7 +341,7 @@ function startAuction() {
     "price_reduction" : price_reduction_time,
     "max_price" : start_price,
     "minimal_price" : finish_price,
-    "item_owner_id" : currentUser.id
+    "owner" : currentUser
   });
   deleteElementFromList(pendingAuctionItemId);
   renderStartAuction(activeList);
@@ -347,11 +354,11 @@ function stopAuction(i) {
   //   "description" : activeList[i].description,
   //   "image" : activeList[i].image
   // });
-  //TODO Check this.
-  allusers[i].items.push({
+  activeList[i].owner.items.push({
     "name" : activeList[i].name,
     "description" : activeList[i].description,
-    "image" : activeList[i].image
+    "image" : activeList[i].image,
+    "owner": activeList[i].owner
   });
   deleteElementFromAuction(i);
   renderStartAuction(activeList);
