@@ -236,8 +236,8 @@
           </form>
         </div>
         <div class="modal-footer">
-          <button type="button"class="btn btn-primary" onclick="">Cancel edit</button>
-          <button type="button"class="btn btn-primary" onclick="editMyItem()">Apply changes</button>
+          <button type="button"class="btn btn-primary" onclick="editItemModalCancel()">Cancel edit</button>
+          <button type="button"class="btn btn-primary" onclick="editItemModalOk()">Apply changes</button>
         </div>
       </div>
     </div>
@@ -265,6 +265,20 @@
 
         <div class="col-sm">
           <button id="addItemButton" class="btn btn-outline-warning" onclick="loadAddItemModal()">addItem</button>
+        </div>
+
+        <div class="col-sm">
+          <button id="downloadStateButton" class="btn btn-outline-warning" onclick="downloadStateButtonClick()">Download
+                                                                                                   data</button>
+        </div>
+
+        <div class="col-sm">
+          <button id="loadStateButton" class="btn btn-outline-warning" onclick="">Load data</button>
+        </div>
+
+        <div class="col-sm">
+          <button id="startStopTimeButton" class="btn btn-outline-warning" onclick="">Start/stop
+                                                                                                  time</button>
         </div>
 
       </div>

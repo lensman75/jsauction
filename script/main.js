@@ -100,6 +100,7 @@ function cancelAuctionModal() {
 }
 function showEditItemModal(i) {
   editItemModal.style.display = "block";
+  pendingEditItemId = i;
   document.getElementById("editItemForm_name").value = itemsList[i].name;
   document.getElementById("editItemForm_description").value = itemsList[i].description;
   document.getElementById("editItemForm_image").value = itemsList[i].image;
@@ -248,8 +249,8 @@ function addItem() {
   itemsList.push({
     "name":itemName,
     "description":itemDescription,
-    "image":itemImage,
-    "owner" : currentUser
+    "image":itemImage
+    // "owner" : currentUser
   });
   renderList(itemsList);
 }
@@ -326,8 +327,8 @@ function buyItem(i) {
     currentUser.items.push({
       "name" : activeList[i].name,
       "description" : activeList[i].description,
-      "image" : activeList[i].image,
-      "owner": currentUser
+      "image" : activeList[i].image
+      // "owner": currentUser
     });
     deleteElementFromAuction(i);
     renderList(itemsList);
@@ -356,7 +357,7 @@ function stepTime() {
         "name" : activeList[i].name,
         "description" : activeList[i].description,
         "image" : activeList[i].image,
-        "owner": activeList[i].owner
+        // "owner": activeList[i].owner
       });
       deleteElementFromAuction(i);
       areItemsChanged = true;
@@ -399,17 +400,23 @@ function startAuction() {
   startAuctionModal.style.display = "none";
 }
 
-function editMyItem() {
+var pendingEditItemId = null;
+
+
+function editItemModalOk() {
   var name = document.getElementById("editItemForm_name").value;
   var description = document.getElementById("editItemForm_description").value;
   var image = document.getElementById("editItemForm_image").value;
-  deleteElementFromList(pendingAuctionItemId);
-  itemsList.push({
-    "name" : name,
-    "description" : description,
-    "image" : image
-  });
+  itemsList[pendingEditItemId].name = name;
+  itemsList[pendingEditItemId].description = description;
+  itemsList[pendingEditItemId].image = image;
+  pendingEditItemId = null;
   renderList(itemsList);
+  editItemModal.style.display = "none";
+}
+
+function editItemModalCancel() {
+  pendingEditItemId = null;
   editItemModal.style.display = "none";
 }
 
@@ -422,8 +429,8 @@ function stopAuction(i) {
   activeList[i].owner.items.push({
     "name" : activeList[i].name,
     "description" : activeList[i].description,
-    "image" : activeList[i].image,
-    "owner": activeList[i].owner
+    "image" : activeList[i].image
+    // "owner": activeList[i].owner
   });
   deleteElementFromAuction(i);
   renderStartAuction(activeList);
@@ -438,4 +445,28 @@ function deleteElementFromList(i) {
 function deleteElementFromAuction(i) {
   activeList.splice(i,1);
   renderStartAuction(activeList);
+}
+
+function downloadStateButtonClick() {
+  data = {
+    "users" : allusers,
+    "items" : itemsList,
+    "auctions" : activeList,
+    "currentUser" : currentUser
+  };
+// Start file download.
+  createFileForDownload("data.json",JSON.stringify(data));
+}
+
+function createFileForDownload(filename, text) {
+  var element = document.createElement('a');
+  element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+  element.setAttribute('download', filename);
+  
+  element.style.display = 'none';
+  document.body.appendChild(element);
+  
+  element.click();
+  
+  document.body.removeChild(element);
 }
