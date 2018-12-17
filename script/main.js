@@ -268,11 +268,78 @@ function addItem() {
   renderList(itemsList);
 }
 
+var sortInfo = {
+  "auctions" : {
+    "sortedBy" : null,
+    "sortDirection" : "ascending"
+  },
+  "items" : {
+    "sortedBy" : null,
+    "sortDirection" : "ascending"
+  }
+};
+
+function getHeaderSortIndicator(tableName,fieldName) {
+  if (fieldName == sortInfo[tableName].sortedBy) {
+    if (sortInfo[tableName].sortDirection == "ascending") {
+      return " &#8595";
+    } else {
+      return " &#8593";
+    }
+  } else {
+    return "";
+  }
+}
+
+function getSortFunction(fieldName, direction) {
+  var aGreatB = 1, aLessB = -1;
+  if (direction == "descending") {
+    aGreatB = -1;
+    aLessB = 1;
+  }
+  return function(a, b) {
+    if (a[fieldName] > b[fieldName]) {
+      return aGreatB ;
+    } else {
+      if (a[fieldName] < b[fieldName]) {
+        return aLessB;
+      } else {
+        return 0;
+      }
+    }
+  };
+}
+
+function updateSortOrder(tableName, fieldName) {
+  console.log("updateSortOrder",tableName,fieldName);
+  if (sortInfo[tableName].sortedBy == fieldName) {
+    if (sortInfo[tableName].sortDirection == "ascending") {
+      sortInfo[tableName].sortDirection = "descending";
+    } else {
+      sortInfo[tableName].sortDirection = "ascending";
+    }
+  }
+  sortInfo[tableName].sortedBy = fieldName;
+  // viewTable();
+  if(tableName == "auctions"){
+    renderStartAuction(activeList);
+  } else if (tableName == "items"){
+    renderList(itemsList);
+  } else {
+    console.log("Error. Incorrect table name when sorting", tableName, fieldName);
+  }
+}
+
 function renderList(items) {
+  if(sortInfo["items"].sortedBy != null){
+    items = items.slice();
+    items.sort(getSortFunction(sortInfo["items"].sortedBy, sortInfo["items"].sortDirection));
+    console.log("sort", items);
+  }
   var h = "<table>" ;
   h += "<thead><tr>";
-  h += "<th>Item name</th>";
-  h += "<th>Description</th>";
+  h += "<th onclick='updateSortOrder(\"items\",\"name\")'>Item name" + getHeaderSortIndicator("items","name") + "</th>";
+  h += "<th onclick='updateSortOrder(\"items\",\"description\")'>Description" + getHeaderSortIndicator("items","description") + "</th>";
   h += "<th>Image</th>";
   h += "<th>Start auction</th>";
   h += "<th>Edit item</th>"
@@ -296,13 +363,18 @@ function editItemData() {
 }
 
 function renderStartAuction(items) {
+  if(sortInfo["auctions"].sortedBy != null){
+    items = items.slice();
+    items.sort(getSortFunction(sortInfo["auctions"].sortedBy, sortInfo["auctions"].sortDirection));
+    console.log("sort", items);
+  }
   var h = "<table>" ;
   h += "<thead><tr>";
-  h += "<th>Item name</th>";
-  h += "<th>Time left</th>";
-  h += "<th>Current price</th>";
-  h += "<th>Minimal price</th>";
-  h += "<th>Auction end time</th>";
+  h += "<th onclick='updateSortOrder(\"auctions\",\"name\")'>Item name" + getHeaderSortIndicator("auctions","name") + "</th>";
+  h += "<th onclick='updateSortOrder(\"auctions\",\"left_time\")'>Time left" + getHeaderSortIndicator("auctions","left_time") + "</th>";
+  h += "<th onclick='updateSortOrder(\"auctions\",\"current_price\")'>Current price" + getHeaderSortIndicator("auctions","current_price") + "</th>";
+  h += "<th onclick='updateSortOrder(\"auctions\",\"minimal_price\")'>Minimal price" + getHeaderSortIndicator("auctions","minimal_price") + "</th>";
+  h += "<th onclick='updateSortOrder(\"auctions\",\"duration\")'>Auction end time" + getHeaderSortIndicator("auctions","duration") + "</th>";
   h += "<th>Stop auction</th>";
   h += "<th>Buy item</th>";
   h += "<tbody>";
