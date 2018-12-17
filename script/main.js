@@ -16,6 +16,8 @@ var activeList = [];
 var pendingAuctionItemId;
 var nextUserId = 0;
 
+var isTimeRunning = true;
+
 //Buttons
 var logoutButton = document.getElementById("logoutButton").style.display = "none";
 var addFundsButton = document.getElementById("addUserFunds").style.display = "none";
@@ -289,9 +291,8 @@ function renderList(items) {
   }
   document.getElementById("itemList").innerHTML = h;
 }
-
+//TODO Delete this
 function editItemData() {
-
 }
 
 function renderStartAuction(items) {
@@ -347,7 +348,20 @@ function buyItem(i) {
   }
 }
 
+function startStopTimeButtonClick() {
+  if(isTimeRunning){
+    isTimeRunning = false;
+    document.getElementById("startStopTimeButton").innerHTML = "Start";
+  } else{
+    isTimeRunning = true;
+    document.getElementById("startStopTimeButton").innerHTML = "Stop";
+  }
+}
+
 function stepTime() {
+  if (!isTimeRunning){
+    return;
+  }
   var areItemsChanged = false;
   for (var i =0; i < activeList.length; i++){
 
@@ -361,7 +375,6 @@ function stepTime() {
     }
     if (activeList[i].duration > 1) {
       activeList[i].duration -= 1;
-      // console.log(activeList[i].duration);
     }
     else {
       activeList[i].owner.items.push({
