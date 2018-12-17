@@ -148,6 +148,17 @@ function getUserByName(users, name) {
   return null;
 }
 
+function getUserById(users, id) {
+  for (var i = 0; i < users.length; i++){
+    if (users[i].id == id){
+      return users[i];
+    }
+  }
+  return null;
+}
+
+
+
 function handleLogin() {
   var userName = document.getElementById("loginForm_login").value;
   var userPassword = document.getElementById("loginForm_password").value;
@@ -448,15 +459,64 @@ function deleteElementFromAuction(i) {
 }
 
 function downloadStateButtonClick() {
-  data = {
+  var data = createDataFromState();
+// Start file download.
+  createFileForDownload("data.json",JSON.stringify(data));
+}
+
+function createDataFromState() {
+  var data = {
     "users" : allusers,
     "items" : itemsList,
     "auctions" : activeList,
     "currentUser" : currentUser
   };
-// Start file download.
-  createFileForDownload("data.json",JSON.stringify(data));
+  return data;
 }
+
+function restoreStateFromData(data) {
+  var _users = data.users;
+  var _currentUser = null;
+  if (data.currentUser != null) {
+    _currentUser = getUserById(_users,data.currentUser.id);
+  }
+  var _items = [];
+  if (data.currentUser != null) {
+    _items = _currentUser.items;
+  }
+  var _activeList = data.auctions;
+  for (var i = 0; i < _activeList.length; i++) {
+    _activeList[i].owner = getUserById(_users,_activeList[i].owner.id);
+  }
+//  TODO Check for errors
+  allusers = _users;
+  itemsList = _items;
+  activeList = _activeList;
+  currentUser = _currentUser;
+  renderList(itemsList);
+  renderStartAuction(activeList);
+  renderFunds();
+  renderUserName();
+}
+
+function readStateDataFile(evt) {
+  //Retrieve the first (and only!) File from the FileList object
+  var f = evt.target.files[0];
+  if (f) {
+    var r = new FileReader();
+    r.onload = function(e) {
+      var contents = e.target.result;
+      var data = JSON.parse(contents);
+      restoreStateFromData(data);
+    };
+    r.readAsText(f);
+  } else {
+    alert("Failed to load file");
+  }
+}
+document.getElementById('restoreStateFromFile').addEventListener('change', readStateDataFile, false);
+
+
 
 function createFileForDownload(filename, text) {
   var element = document.createElement('a');
