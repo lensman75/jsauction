@@ -3,6 +3,8 @@ var registerModal = document.getElementById("registration_modal");
 var welcomeModal = document.getElementById("welcome_modal");
 var addItemModal = document.getElementById("addItem_modal");
 var startAuctionModal = document.getElementById("startAuction_modal");
+var editItemModal = document.getElementById("editItem_modal");
+
 var spanModalCloseLogin = document.getElementsByClassName("close")[0];
 var spanModalCloseRegistration = document.getElementsByClassName("close")[1];
 var spanModalCloseWelcome = document.getElementsByClassName("close")[2];
@@ -95,6 +97,12 @@ function cancelUserRegistration() {
 function cancelAuctionModal() {
   startAuctionModal.style.display = "none";
   pendingAuctionItemId = null;
+}
+function showEditItemModal(i) {
+  editItemModal.style.display = "block";
+  document.getElementById("editItemForm_name").value = itemsList[i].name;
+  document.getElementById("editItemForm_description").value = itemsList[i].description;
+  document.getElementById("editItemForm_image").value = itemsList[i].image;
 }
 function showAuctionModal(i) {
   startAuctionModal.style.display = "block";
@@ -264,7 +272,7 @@ function renderList(items) {
     // h+= "<td><button onclick=\"startAuction("+i+")\">Start auction</button>"
     h+= "<td><button type='button' class='btn btn-primary' data-toggle='modal' data-target='startAuction_modal' onclick=\"showAuctionModal("+i+")\">Start" +
         " auction</button>";
-    h+= "<td><button class='btn btn-info' onclick='editItemData()'>Edit item</button>";
+    h+= "<td><button class='btn btn-info' onclick='showEditItemModal(" + i + ")'>Edit item</button>";
     h+= "<td><button class='btn btn-danger' onclick=\"deleteElementFromList("+i+")\">Delete item</button>";
   }
   document.getElementById("itemList").innerHTML = h;
@@ -389,6 +397,20 @@ function startAuction() {
   deleteElementFromList(pendingAuctionItemId);
   renderStartAuction(activeList);
   startAuctionModal.style.display = "none";
+}
+
+function editMyItem() {
+  var name = document.getElementById("editItemForm_name").value;
+  var description = document.getElementById("editItemForm_description").value;
+  var image = document.getElementById("editItemForm_image").value;
+  deleteElementFromList(pendingAuctionItemId);
+  itemsList.push({
+    "name" : name,
+    "description" : description,
+    "image" : image
+  });
+  renderList(itemsList);
+  editItemModal.style.display = "none";
 }
 
 function stopAuction(i) {
