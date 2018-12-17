@@ -14,6 +14,12 @@ var activeList = [];
 var pendingAuctionItemId;
 var nextUserId = 0;
 
+//Buttons
+var logoutButton = document.getElementById("logoutButton").style.display = "none";
+var addFundsButton = document.getElementById("addUserFunds").style.display = "none";
+var welcomeUserInfoSection = document.getElementById("welcome_section").style.display = "none";
+var addItemUserButton = document.getElementById("addItemButton").style.display = "none";
+
 // // When the user clicks on <span> (x), close the modal
 spanModalCloseLogin.onclick = function() {
   loginModal.style.display = "none";
@@ -92,14 +98,26 @@ function cancelAuctionModal() {
 }
 function showAuctionModal(i) {
   startAuctionModal.style.display = "block";
-  var auctionDetails = document.getElementById("startAuctionDetailes");
-  var name = auctionDetails[0].value = itemsList[i].name;
-  var description = auctionDetails[1].value = itemsList[i].description;
-  var image = auctionDetails[6].value = itemsList[i].image;
-  var start_price = auctionDetails[2].value = 500;
-  var finish_price = auctionDetails[3].value = 50;
-  var reduction_time = auctionDetails[4].value = 15;
-  var auction_time = auctionDetails[5].value = 20;
+  // var auctionDetails = document.getElementById("startAuctionDetailes");
+  // var name = auctionDetails[0].value = itemsList[i].name;
+  // var description = auctionDetails[1].value = itemsList[i].description;
+  // var image = auctionDetails[6].value = itemsList[i].image;
+  // var start_price = auctionDetails[2].value = 500;
+  // var finish_price = auctionDetails[3].value = 50;
+  // var reduction_time = auctionDetails[4].value = 15;
+  // var auction_time = auctionDetails[5].value = 20;
+  var name = document.getElementById("startAuctionDetailes_name").value = itemsList[i].name;
+  var description = document.getElementById("startAuctionDetailes_description").value = itemsList[i].description;
+  var image = document.getElementById("startAuctionDetailes_item_image").value = itemsList[i].image;
+
+  var start_price = document.getElementById("startAuctionDetailes_start_price").value = 500;
+
+  var finish_price = document.getElementById("startAuctionDetailes_final_price").value = 50;
+
+  var reduction_time = document.getElementById("startAuctionDetailes_price_reduction_time").value = 15;
+
+  var auction_time = document.getElementById("startAuctionDetailes_auction_time").value = 20;
+
   pendingAuctionItemId = i;
 }
 
@@ -122,15 +140,10 @@ function getUserByName(users, name) {
 }
 
 function handleLogin() {
-  var loginForm = document.getElementById("loginForm");
-  var userName = loginForm[0].value;
-  var userPassword = loginForm[1].value;
+  var userName = document.getElementById("loginForm_login").value;
+  var userPassword = document.getElementById("loginForm_password").value;
   if (userLoginExist(allusers, userName, userPassword)) {
-    // loadWelcomeModal();
-    // document.getElementById("userInfo").innerHTML = "Hello " + userName;
-    // document.getElementById("userBalance").innerHTML = "Your balance " + "1000" + "$";
     currentUser = getUserByName(allusers,userName);
-    console.log(currentUser);
     itemsList = currentUser.items;
     document.getElementById("logoutButton").style.display = "block";
     document.getElementById("addItemButton").style.display = "block";
@@ -141,13 +154,16 @@ function handleLogin() {
     document.getElementById("loginButton").style.display = "none";
     document.getElementById("itemList").style.display = "block";
     document.getElementById("addUserFunds").style.display = "block";
-    // onLoginShowUsrComponents();
+    loginModal.style.display = "none";
+    document.getElementById("loginButton").style.display = "none";
     renderList(itemsList);
     renderUserName();
     renderFunds();
   }
   else {
-      document.getElementById("mainFooter").innerHTML = "Login error"
+    //TODO Check, what type of error? Wrong password or username don't exist
+    document.getElementById("mainFooter").innerHTML = "<div class=\"alert alert-primary\">Login error. Dont have an account?" +
+          " Please <span class=\"alert-link\" onclick=\"handleRegistration()\">Sign up</span></div>";
   }
 }
 
@@ -198,10 +214,9 @@ function userExists(users, name) {
 }
 
 function handleUserCreation() {
-  var registrationForm = document.getElementById("userRegistrationForm");
-  var name = registrationForm[0].value;
-  var password = registrationForm[1].value;
-  var repeatpass = registrationForm[2].value;
+  var name = document.getElementById("userRegistrationForm_login").value;
+  var password = document.getElementById("userRegistrationForm_password").value;
+  var repeatpass = document.getElementById("userRegistrationForm_password_repeat").value;
   if (password != repeatpass) {
     alert("Passwords you entered are not identical");
     return;
@@ -209,7 +224,6 @@ function handleUserCreation() {
   if (!userExists(allusers,name)) {
     var currentUser = User.register(name, password);
     allusers.push(currentUser);
-    console.log(allusers);
     alert("Welcome to auction! Now you can have fun!");
     document.getElementById("mainFooter").innerHTML = "";
     loadLoginModal();
@@ -220,9 +234,9 @@ function handleUserCreation() {
 }
 
 function addItem() {
-  var itemName = document.getElementById("addItemDetails")[0].value;
-  var itemDescription = document.getElementById("addItemDetails")[1].value;
-  var itemImage = document.getElementById("addItemDetails")[2].value;
+  var itemName = document.getElementById("addItemDetails_item_name").value;
+  var itemDescription = document.getElementById("addItemDetails_description").value;
+  var itemImage = document.getElementById("addItemDetails_image").value;
   itemsList.push({
     "name":itemName,
     "description":itemDescription,
@@ -239,6 +253,7 @@ function renderList(items) {
   h += "<th>Description</th>";
   h += "<th>Image</th>";
   h += "<th>Start auction</th>";
+  h += "<th>Edit item</th>"
   h += "<th>Delete item</th>";
   h += "<tbody>";
   for (var i = 0; i < items.length; i++) {
@@ -247,10 +262,16 @@ function renderList(items) {
     h+= "<td>" + items[i].description + "</td>";
     h+= "<td>" + items[i].image + "</td>";
     // h+= "<td><button onclick=\"startAuction("+i+")\">Start auction</button>"
-    h+= "<td><button onclick=\"showAuctionModal("+i+")\">Start auction</button>";
-    h+= "<td><button onclick=\"deleteElementFromList("+i+")\">Delete item</button>";
+    h+= "<td><button type='button' class='btn btn-primary' data-toggle='modal' data-target='startAuction_modal' onclick=\"showAuctionModal("+i+")\">Start" +
+        " auction</button>";
+    h+= "<td><button class='btn btn-info' onclick='editItemData()'>Edit item</button>";
+    h+= "<td><button class='btn btn-danger' onclick=\"deleteElementFromList("+i+")\">Delete item</button>";
   }
   document.getElementById("itemList").innerHTML = h;
+}
+
+function editItemData() {
+
 }
 
 function renderStartAuction(items) {
@@ -305,15 +326,6 @@ function buyItem(i) {
     renderFunds();
   }
 }
-//TODO Delete this
-function onLoginShowUsrComponents () {
-  var x = document.getElementsByClassName("usrControl");
-  var i = 0;
-  for (i = 0; i < x.length; i++){
-    x[i].style.display = "block";
-  }
-}
-
 
 function stepTime() {
   var areItemsChanged = false;

@@ -9,55 +9,78 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
   <link rel="stylesheet" href="styles/custom.css">
+  <link rel="stylesheet" href="styles/bootstrap.css">
 </head>
 <body>
   <!--Login modal-->
-  <div id="login_modal" class="modal">
-    <div class="modal-content">
-      <span class="close">&times;</span>
-      <form action="" id="loginForm">
-        <div>
-          <label for="loginForm_login">Login</label>
-          <input id="loginForm_login" type="text">
+  <div id="login_modal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Login to site</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
-        <br>
-        <div>
-          <label for="loginForm_password">Password</label>
-          <input id="loginForm_password" type="password">
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label for="loginForm_login">Your login</label>
+              <input type="text" class="form-control" aria-describedby="Login your name" placeholder="Your username"
+                     id="loginForm_login">
+            </div>
+            <div class="form-group">
+              <label for="loginForm_password">Password</label>
+              <input type="password" class="form-control" id="loginForm_password" placeholder="Your password">
+            </div>
+            <div class="form-group alert alert-light">
+              <span>Don't have an account? Please <span onclick="handleRegistration()" class="btn btn-outline-success">Sign up</span></span>
+            </div>
+
+            <div class="form-group" id="mainFooter">
+            </div>
+          </form>
         </div>
-        <br>
-        <input type="button" value="Login" onclick="handleLogin()">
-        <hr>
-        <span>Don't have an account? </span>
-        <span onclick="handleRegistration()"><>SignUp<></span>
-        <footer id="mainFooter"></footer>
-      </form>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" onclick="handleLogin()">Login</button>
+        </div>
+      </div>
     </div>
   </div>
 
+
   <!--Registration modal-->
-  <div id="registration_modal" class="modal">
-    <div class="modal-content" id="abc">
-      <span class="close">&times;</span>
-      <form action="" id="userRegistrationForm">
-        <div>
-          <label for="userRegistrationForm_login">Login</label>
-          <input id="userRegistrationForm_login" type="text">
+  <div id="registration_modal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Registration</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
-        <br>
-        <div>
-          <label for="userRegistrationForm_password">Password</label>
-          <input id="userRegistrationForm_password" type="password">
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label for="userRegistrationForm_login">Choose login</label>
+              <input type="text" id="userRegistrationForm_login" placeholder="Enter desired login" class="form-control">
+            </div>
+            <div class="form-group">
+              <label for="userRegistrationForm_password">Enter password</label>
+              <input type="password" id="userRegistrationForm_password" placeholder="Enter password" class="form-control">
+            </div>
+            <div class="form-group">
+              <label for="userRegistrationForm_password_repeat">Repeat password</label>
+              <input type="password" id="userRegistrationForm_password_repeat" placeholder="Repeat your password"
+                     class="form-control">
+            </div>
+          </form>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" onclick="cancelUserRegistration()">Cancel registration</button>
+            <button type="button" class="btn btn-primary" onclick="handleUserCreation()">Register account</button>
+          </div>
         </div>
-        <br>
-        <div>
-          <label for="userRegistrationForm_password_repeat">Repeat password</label>
-          <input id="userRegistrationForm_password_repeat" type="password">
-        </div>
-        <input type="button" value="Register account" onclick="handleUserCreation()">
-        <br>
-        <input type="button" value="Cancel registration" onclick="cancelUserRegistration()">
-      </form>
+      </div>
     </div>
   </div>
 
@@ -76,56 +99,193 @@
   </div>
 
   <!--Add item modal-->
-  <div id="addItem_modal" class="modal">
-    <div class="modal-content">
-      <span class="close">&times;</span>
-      <div class="modal-field">
-        <form class="modal-field" id="addItemDetails">
-          <label for="addItemDetails_item_name">Item name</label>
-          <input id="addItemDetails_item_name" type="text">
-          <label for="addItemDetails_description">Description</label>
-          <input id="addItemDetails_description" type="text">
-          <label for="addItemDetails_image">Image</label>
-          <input id="addItemDetails_image" type="text">
-        </form>
+  <div id="addItem_modal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Add my item</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label for="addItemDetails_item_name">Item name</label>
+              <input id="addItemDetails_item_name" type="text" class="form-control" placeholder="Item name">
+            </div>
+            <div class="form-group">
+              <label for="addItemDetails_description">Description</label>
+              <input id="addItemDetails_description" type="text" class="form-control" placeholder="Item description">
+            </div>
+            <div class="form-group">
+              <label for="addItemDetails_image">Image</label>
+              <input id="addItemDetails_image" type="text" class="form-control" placeholder="Item image here...">
+            </div>
+          </form>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" onclick="cancelAddItem()">Cancel</button>
+            <button type="button" class="btn btn-primary" onclick="addItem()">Add item</button>
+          </div>
+        </div>
       </div>
-      <button onclick="cancelAddItem()">Cancel!</button>
-      <button onclick="addItem()">Add item!</button>
     </div>
   </div>
 
   <!--Start auction modal-->
-  <div id="startAuction_modal" class="modal">
-    <div class="modal-content">
-      <span class="close">&times;</span>
-      <div class="modal-field">
-        <form class="modal-field" id="startAuctionDetailes">
-          <label for="startAuctionDetailes_name">Name</label>
-          <input id="startAuctionDetailes_name" type="text" readonly="readonly">
-          <label for="startAuctionDetailes_description">Description</label>
-          <input id="startAuctionDetailes_description" type="text">
-          <label for="startAuctionDetailes_start_price">Start price</label>
-          <input id="startAuctionDetailes_start_price" type="text">
-          <label for="startAuctionDetailes_final_price">Final price</label>
-          <input id="startAuctionDetailes_final_price" type="text">
-          <label for="startAuctionDetailes_price_reduction_time">Price reduction time</label>
-          <input id="startAuctionDetailes_price_reduction_time" type="text">
-          <label for="startAuctionDetailes_auction_time">Auction time</label>
-          <input id="startAuctionDetailes_auction_time" type="text">
-          <label for="startAuctionDetailes_item_image">Image</label>
-          <input id="startAuctionDetailes_item_image" type="text">
-          <input type="button" value="Start" onclick="startAuction()">
-          <input type="button" value="Cancel auction" onclick="cancelAuctionModal()">
-        </form>
+  <div id="startAuction_modal" class="modal" tabindex="-1" role="dialog"
+       aria-labelledby="startAiction_long_modal" aria-hidden="true">
+
+  <div class="modal-dialog" role="document">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h5 class="modal-title" id="startAiction_long_modal">Start auction</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label for="startAuctionDetailes_name">Item name</label>
+              <input type="text" id="startAuctionDetailes_name" class="form-control" placeholder="">
+            </div>
+            <div class="form-group">
+              <label for="startAuctionDetailes_description">Description</label>
+              <input type="text" id="startAuctionDetailes_description" class="form-control" placeholder="">
+            </div>
+            <div class="form-group">
+              <label for="startAuctionDetailes_start_price">Start price</label>
+              <input type="text" id="startAuctionDetailes_start_price" class="form-control" placeholder="">
+            </div>
+            <div class="form-group">
+              <label for="startAuctionDetailes_final_price">Finish price</label>
+              <input type="text" id="startAuctionDetailes_final_price" class="form-control" placeholder="">
+            </div>
+            <div class="form-group">
+              <label for="startAuctionDetailes_price_reduction_time">Price reduction time</label>
+              <input type="text" id="startAuctionDetailes_price_reduction_time" class="form-control" placeholder="">
+            </div>
+            <div class="form-group">
+              <label for="startAuctionDetailes_auction_time">Auction time</label>
+              <input type="text" id="startAuctionDetailes_auction_time" class="form-control" placeholder="">
+            </div>
+            <div class="form-group">
+              <label for="startAuctionDetailes_item_image">Image</label>
+              <input type="text" id="startAuctionDetailes_item_image" class="form-control" placeholder="">
+            </div>
+          </form>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" onclick="cancelAuctionModal()">Cancel</button>
+          <button type="button" class="btn btn-primary" onclick="startAuction()">Start auction</button>
+        </div>
+
+        <!--<div class="modal-field">-->
+          <!--<form class="modal-field" id="startAuctionDetailes">-->
+            <!--<label for="startAuctionDetailes_name">Name</label>-->
+            <!--<input id="" type="text" readonly="readonly">-->
+            <!--<label for="">Description</label>-->
+            <!--<input id="startAuctionDetailes_description" type="text">-->
+            <!--<label for="">Start price</label>-->
+            <!--<input id="startAuctionDetailes_start_price" type="text">-->
+            <!--<label for="">Final price</label>-->
+            <!--<input id="startAuctionDetailes_final_price" type="text">-->
+            <!--<label for="">Price reduction time</label>-->
+            <!--<input id="startAuctionDetailes_price_reduction_time" type="text">-->
+            <!--<label for="">Auction time</label>-->
+            <!--<input id="startAuctionDetailes_auction_time" type="text">-->
+            <!--<label for="">Image</label>-->
+            <!--<input id="startAuctionDetailes_item_image" type="text">-->
+            <!--<input type="button" value="Start" onclick="startAuction()">-->
+            <!--<input type="button" value="Cancel auction" onclick="cancelAuctionModal()">-->
+          <!--</form>-->
+        <!--</div>-->
+        <!--<button onclick="cancelAddItem()">Cancel!</button>-->
       </div>
-      <!--<button onclick="cancelAddItem()">Cancel!</button>-->
     </div>
   </div>
 
-  <button id="loginButton" style="display: block;" onclick="loadLoginModal()">Login</button>
-  <button style="display:none" id="logoutButton" onclick="handleLogout()">Logout</button>
-  <button style="display:none" id="addItemButton" onclick="loadAddItemModal()">addItem</button>
-  <button style="display: none" id="addUserFunds" onclick="addFunds()">Earn more funds</button>
+  <!--Edit item modal-->
+  <div id="editItem_modal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 .modal-title>Edit item</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label for="editItemForm_name"></label>
+              <input id="editItemForm_name" type="text" class="form-control">
+            </div>
+            <div class="form-group">
+              <label for="editItemForm_description"></label>
+              <input id="editItemForm_description" type="text" class="form-control">
+            </div>
+            <div class="form-group">
+              <label for="editItemForm_image"></label>
+              <input id="editItemForm_image" type="text" class="form-control">
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button"class="btn btn-primary" onclick="">Cancel edit</button>
+          <button type="button"class="btn btn-primary" onclick="">Apply changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!--NavBar-->
+  <!--navbar navbar-dark bg-dark-->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+
+    <div class="container">
+      <div class="row">
+
+        <div class="col-sm">
+          <button type="button" class="btn btn-outline-primary" onclick="loadLoginModal()" id="loginButton">Login
+          </button>
+
+          <button type="button" class="btn btn-outline-danger" onclick="handleLogout()" id="logoutButton">Logout
+          </button>
+        </div>
+
+        <div class="col-sm">
+          <button type="button" class="btn btn-outline-success" onclick="addFunds()" id="addUserFunds">Add funds
+          </button>
+        </div>
+
+        <div class="col-sm">
+          <button id="addItemButton" class="btn btn-outline-warning" onclick="loadAddItemModal()">addItem</button>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <div class="navbar-nav mr-auto">
+      </div>
+      <form class="form-inline my-2 my-lg-0">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      </form>
+    </div>
+  </nav>
+  <!--End of navbar-->
+
+
+  <!--<button id="loginButton" style="display: block;" onclick="loadLoginModal()">Login</button>-->
+  <!--<button style="display:none" id="logoutButton" onclick="handleLogout()">Logout</button>-->
+  <!--<button style="display:none" id="addItemButton" onclick="loadAddItemModal()">addItem</button>-->
+  <!--<button style="display: none" id="addUserFunds" onclick="addFunds()">Earn more funds</button>-->
   <div id="welcome_section" style="display: none;">
     <span id="welcome_section_name">Admin</span>
     <span id="welcome_section_balance">500 $</span>

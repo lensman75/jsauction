@@ -53,4 +53,10 @@ table, th, tbody, tr, td {
   border-collapse: collapse;
   border: 1px solid mediumpurple; }
 
+#startAuction_modal {
+  overflow-y: scroll; }
+
+button {
+  margin-right: 5px; }
+
 /*# sourceMappingURL=custom.css.map */
