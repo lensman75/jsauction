@@ -331,6 +331,11 @@ function updateSortOrder(tableName, fieldName) {
 }
 
 function renderList(items) {
+  if(filterText != ""){
+    items = items.filter(function(obj) {
+      return containsText(obj, filterText);
+    });
+  }
   if(sortInfo["items"].sortedBy != null){
     items = items.slice();
     items.sort(getSortFunction(sortInfo["items"].sortedBy, sortInfo["items"].sortDirection));
@@ -345,10 +350,11 @@ function renderList(items) {
   h += "<th>Edit item</th>"
   h += "<th>Delete item</th>";
   h += "<tbody>";
+  const disableHighLight = filterText == "";
   for (var i = 0; i < items.length; i++) {
     h+= "<tr>";
-    h+= "<td>" + items[i].name + "</td>";
-    h+= "<td>" + items[i].description + "</td>";
+    h+= "<td>" + highlightIfContainsText(items[i].name, filterText, disableHighLight) + "</td>";
+    h+= "<td>" + highlightIfContainsText(items[i].description, filterText, disableHighLight) + "</td>";
     h+= "<td>" + items[i].image + "</td>";
     // h+= "<td><button onclick=\"startAuction("+i+")\">Start auction</button>"
     h+= "<td><button type='button' class='btn btn-primary' data-toggle='modal' data-target='startAuction_modal' onclick=\"showAuctionModal("+i+")\">Start" +
@@ -363,6 +369,12 @@ function editItemData() {
 }
 
 function renderStartAuction(items) {
+  if(filterText != ""){
+    items = items.filter(function(obj) {
+      return containsText(obj, filterText);
+    });
+  }
+  
   if(sortInfo["auctions"].sortedBy != null){
     items = items.slice();
     items.sort(getSortFunction(sortInfo["auctions"].sortedBy, sortInfo["auctions"].sortDirection));
@@ -378,13 +390,19 @@ function renderStartAuction(items) {
   h += "<th>Stop auction</th>";
   h += "<th>Buy item</th>";
   h += "<tbody>";
+  const disableHighLight = filterText == "";
   for (var i = 0; i < items.length; i++) {
     h+= "<tr>";
-    h += "<td>" + items[i].name + "</td>";
-    h += "<td>" + items[i].left_time + "</td>";
-    h += "<td>" + items[i].current_price + "</td>";
-    h += "<td>" + items[i].minimal_price + "</td>";
-    h += "<td>" + items[i].duration + "</td>";
+    h+= "<td>" + highlightIfContainsText(items[i].name, filterText, disableHighLight) + "</td>";
+    h+= "<td>" + highlightIfContainsText(items[i].left_time, filterText, disableHighLight) + "</td>";
+    h+= "<td>" + highlightIfContainsText(items[i].current_price, filterText, disableHighLight) + "</td>";
+    h+= "<td>" + highlightIfContainsText(items[i].minimal_price, filterText, disableHighLight) + "</td>";
+    h+= "<td>" + highlightIfContainsText(items[i].duration, filterText, disableHighLight) + "</td>";
+    // h += "<td>" + items[i].name + "</td>";
+    // h += "<td>" + items[i].left_time + "</td>";
+    // h += "<td>" + items[i].current_price + "</td>";
+    // h += "<td>" + items[i].minimal_price + "</td>";
+    // h += "<td>" + items[i].duration + "</td>";
     if (currentUser != null && currentUser.id == items[i].owner.id){
     h += "<td><button class=\"usrControl\" onclick=\"stopAuction("+i+")\">Stop" +
         " auction</button></td>"; }
@@ -614,4 +632,36 @@ function createFileForDownload(filename, text) {
   element.click();
   
   document.body.removeChild(element);
+}
+
+var filterText = document.getElementById("search-input").value;
+
+function isSubstring(s, substr) {
+  return (String(s).search(new RegExp(substr, "i"))) != -1;
+}
+
+function containsText(obj, text) {
+  for (var key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      if (isSubstring(obj[key], text)) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+function highlightIfContainsText(obj, text, disable) {
+  const s = String(obj);
+  if (!disable && isSubstring(s, text)) {
+    return '<span class="search-highlight">' + s + "</span>"
+  } else {
+    return s;
+  }
+}
+
+function updateFilterText(text) {
+  filterText = text;
+  renderList(itemsList);
+  renderStartAuction(activeList);
 }
