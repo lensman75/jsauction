@@ -272,9 +272,14 @@
                                                                                                    data</button>
         </div>
 
-        <div class="col-sm">
+        <div class="col-sm-4">
           <!--<button id="loadStateButton" class="btn btn-outline-warning" onclick="">Load data</button>-->
-          <input type="file" id="restoreStateFromFile" />
+          <!--<label for="restoreStateFromFile" class="custom-file-input">Choose file</label>-->
+          <!--<input type="file" class="custom-file-input" id="restoreStateFromFile" />-->
+          <div class="custom-file">
+            <input type="file" class="custom-file-input" id="restoreStateFromFile">
+            <label class="custom-file-label" for="restoreStateFromFile">Choose file</label>
+          </div>
         </div>
 
         <div class="col-sm">
@@ -285,14 +290,18 @@
       </div>
     </div>
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <div class="navbar-nav mr-auto">
+    <div class="col-sm-4">
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto">
+        </div>
+        <form class="form-inline my-2 my-lg-0">
+          <input
+            class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"
+            oninput="updateFilterText(this.value)" id="search-input"
+          >
+          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
       </div>
-      <form class="form-inline my-2 my-lg-0">
-        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"
-               oninput="updateFilterText(this.value)" id="search-input">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-      </form>
     </div>
   </nav>
   <!--End of navbar-->
