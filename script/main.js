@@ -212,7 +212,7 @@ function addFunds() {
 
 function renderFunds() {
   if (currentUser != null) {
-    document.getElementById("welcome_section_balance").innerHTML = "Your balance " + currentUser.balance + " $";
+    document.getElementById("welcome_section_balance").innerHTML = "Your balance " + toCurrencyString(currentUser.balance) + " $";
   }
 }
 
@@ -395,14 +395,9 @@ function renderStartAuction(items) {
     h+= "<tr>";
     h+= "<td>" + highlightIfContainsText(items[i].name, filterText, disableHighLight) + "</td>";
     h+= "<td>" + highlightIfContainsText(items[i].left_time, filterText, disableHighLight) + "</td>";
-    h+= "<td>" + highlightIfContainsText(items[i].current_price, filterText, disableHighLight) + "</td>";
-    h+= "<td>" + highlightIfContainsText(items[i].minimal_price, filterText, disableHighLight) + "</td>";
+    h+= "<td>" + highlightIfContainsText(toCurrencyString(items[i].current_price), filterText, disableHighLight) + "</td>";
+    h+= "<td>" + highlightIfContainsText(toCurrencyString(items[i].minimal_price), filterText, disableHighLight) + "</td>";
     h+= "<td>" + highlightIfContainsText(items[i].duration, filterText, disableHighLight) + "</td>";
-    // h += "<td>" + items[i].name + "</td>";
-    // h += "<td>" + items[i].left_time + "</td>";
-    // h += "<td>" + items[i].current_price + "</td>";
-    // h += "<td>" + items[i].minimal_price + "</td>";
-    // h += "<td>" + items[i].duration + "</td>";
     if (currentUser != null && currentUser.id == items[i].owner.id){
     h += "<td><button class=\"usrControl\" onclick=\"stopAuction("+i+")\">Stop" +
         " auction</button></td>"; }
@@ -664,4 +659,8 @@ function updateFilterText(text) {
   filterText = text;
   renderList(itemsList);
   renderStartAuction(activeList);
+}
+
+function toCurrencyString(x) {
+  return Number.parseFloat(x).toFixed(2);
 }
