@@ -24,6 +24,10 @@ var addFundsButton = document.getElementById("addUserFunds").style.display = "no
 var welcomeUserInfoSection = document.getElementById("welcome_section").style.display = "none";
 var addItemUserButton = document.getElementById("addItemButton").style.display = "none";
 
+var loc = {};
+
+
+
 
 // // When the user clicks on <span> (x), close the modal
 spanModalCloseLogin.onclick = function() {
@@ -161,8 +165,6 @@ function getUserById(users, id) {
   return null;
 }
 
-
-
 function handleLogin() {
   var userName = document.getElementById("loginForm_login").value;
   var userPassword = document.getElementById("loginForm_password").value;
@@ -173,22 +175,21 @@ function handleLogin() {
     document.getElementById("addItemButton").style.display = "block";
     document.getElementById("welcome_section").style.display = "block";
     var un = document.getElementById("loginForm_login").value;
-    // document.getElementById("welcome_section_name").innerHTML = currentUser.name;
-    // document.getElementById("welcome_section_balance").innerHTML = "Your balance is " + currentUser.balance + "$";
     document.getElementById("loginButton").style.display = "none";
     document.getElementById("itemList").style.display = "block";
     document.getElementById("addUserFunds").style.display = "block";
     loginModal.style.display = "none";
     document.getElementById("loginButton").style.display = "none";
-    // document.getElementById("stopAuctionTableHeader").style.display = "block";
-    // document.getElementById("buyItemTableHeader").style.display = "block";
+    document.getElementById("startedLot").style.display = "block";
+    document.getElementById("galary_section").style.display = "none";
     renderList(itemsList);
+    renderStartAuction(activeList);
     renderUserName();
     renderFunds();
   }
   else {
     //TODO Check, what type of error? Wrong password or username don't exist
-    document.getElementById("mainFooter").innerHTML = "<div class=\"alert alert-primary\">Login error. Dont have an account?" +
+    document.getElementById("mainFooter").innerHTML = "<div class=\"alert alert-primary\">Login error." +
           " Please <span class=\"alert-link\" onclick=\"handleRegistration()\">Sign up</span></div>";
   }
 }
@@ -203,7 +204,10 @@ function handleLogout() {
   document.getElementById("welcome_section").style.display = "none";
   document.getElementById("itemList").style.display = "none";
   document.getElementById("addUserFunds").style.display = "none";
+  document.getElementById("startedLot").style.display = "none";
+  document.getElementById("galary_section").style.display = "block";
   renderList(itemsList);
+  renderStartAuction(activeList);
 }
 
 function addFunds() {
@@ -250,9 +254,9 @@ function handleUserCreation() {
   if (!userExists(allusers,name)) {
     var currentUser = User.register(name, password);
     allusers.push(currentUser);
-    alert("Welcome to auction! Now you can have fun!");
-    document.getElementById("mainFooter").innerHTML = "";
     loadLoginModal();
+    document.getElementById("mainFooter").innerHTML = "<div class='alert alert-success'>Welcome to site! Now you can" +
+      " have fun! Enter your login and password!</div>";
   }
   else {
     alert("This Name already exist. You can choose another Name or restore password if you forget!");
@@ -412,11 +416,63 @@ function renderList(items) {
 function editItemData() {
 }
 
+
 function renderStartAuction(items) {
+  if(currentUser != null){
+    console.log("Render auction as table");
+    renderAuctionAsTable(items);
+  } else {
+    console.log("Render auction as galary");
+    renderAuctionAsGalary(items);
+  }
+}
+
+function renderAuctionAsGalary(items) {
   if(filterText != ""){
     items = items.filter(function(obj) {
-      return containsText(obj, filterText, ["image"]);
+      return containsText(obj, filterText, ["image", "owner"]);
     });
+  }
+  
+  items = items.filter(function (x) {
+    return x.image != null && x.image.length > 50;
+  });
+  var numberRows = 2;
+  var numberColumns = 3;
+  var classNameInnerDiv = "galaryDiv";
+  var classNameOuterDiv = "galaryDiv_Outer";
+  var numberRowsExisting = Math.floor(items.length/numberColumns);
+  
+  
+  if (items.length%numberColumns != 0){
+    numberRowsExisting += 1;
+  }
+  var h = "";
+  
+  const disableHighLight = filterText == "";
+  
+  for (var i = 0; i < Math.min(numberRows,numberRowsExisting); i+=1) {
+    h += "<div class=\"" + classNameOuterDiv + "\">";
+     for (var j = i * numberColumns; j < Math.min((i+1)*numberColumns,items.length); j+=1){
+       h += "<div class=\""+classNameInnerDiv+"\">\n" +
+       "          <img src="+ items[j].image + " alt=\""+items[j].name+"\">\n" +
+       "          <p>" + highlightIfContainsText(items[j].name, filterText, disableHighLight) + "</p>\n" +
+         "<p>$ " + items[j].current_price + "</p>" +
+       "        </div>\n"
+     }
+    h += "</div>";
+  }
+  document.getElementById("galary_section").innerHTML = h;
+}
+
+
+function renderAuctionAsTable(items) {
+  console.log("Item.length", items.length);
+  if(filterText != ""){
+    items = items.filter(function(obj) {
+      return containsText(obj, filterText, ["image", "description", "owner"]);
+    });
+    console.log("Item.length", items.length);
   }
   
   if(sortInfo["auctions"].sortedBy != null){
@@ -508,9 +564,11 @@ function startStopTimeButtonClick() {
 }
 
 function stepTime() {
+  console.log("Step time", isTimeRunning);
   if (!isTimeRunning){
     return;
   }
+  console.log("Stop time, continue processing");
   var areItemsChanged = false;
   for (var i =0; i < activeList.length; i++){
 
@@ -540,11 +598,13 @@ function stepTime() {
   if (areItemsChanged) {
     renderList(itemsList);
   }
+  
+  renderStartAuction(activeList);
 }
 
 setInterval(function () {
   stepTime();
-  renderStartAuction(activeList);
+  // renderStartAuction(activeList);
 }, 1000);
 
 function startAuction() {
@@ -706,6 +766,7 @@ function containsText(obj, text, ignoreFields) {
     }
     if (obj.hasOwnProperty(key)) {
       if (isSubstring(obj[key], text)) {
+        console.log("Contains text", key, text, obj[key]);
         return true;
       }
     }

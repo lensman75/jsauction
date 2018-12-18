@@ -1,3 +1,7 @@
+body {
+  width: 100vw;
+  height: 100vh; }
+
 .modal {
   display: none;
   position: fixed;
@@ -61,5 +65,26 @@ button {
 
 .search-highlight {
   background-color: yellow; }
+
+.galaryDiv {
+  height: 300px;
+  width: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  border: 1px solid black;
+  border-radius: 1vw;
+  margin-top: 1vw;
+  padding: 2vw; }
+
+#galary_section {
+  display: flex;
+  flex-direction: column; }
+
+.galaryDiv_Outer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around; }
 
 /*# sourceMappingURL=custom.css.map */
