@@ -87,4 +87,8 @@ button {
   flex-direction: row;
   justify-content: space-around; }
 
+#welcome_section {
+  display: flex;
+  flex-direction: row; }
+
 /*# sourceMappingURL=custom.css.map */

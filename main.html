@@ -222,77 +222,63 @@
   </div>
   
   <!--NavBar-->
-  <!--navbar navbar-dark bg-dark-->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-
-    <div class="container">
-      <div class="row">
-
-
-
-
-
+    <!--<div class="container">-->
+      <div class="row align-items-center">
         <div class="col-sm">
           <button id="addItemButton" class="btn btn-outline-warning" onclick="loadAddItemModal()">addItem</button>
         </div>
 
         <div class="col-sm">
-          <button id="downloadStateButton" class="btn btn-outline-warning"
-                  onclick="downloadStateButtonClick()">Save state
+          <button id="downloadStateButton" class="btn btn-outline-warning" onclick="downloadStateButtonClick()">Save
+            state
           </button>
         </div>
 
-        <div class="col-sm-4">
-          <!--<button id="loadStateButton" class="btn btn-outline-warning" onclick="">Load data</button>-->
-          <!--<label for="restoreStateFromFile" class="custom-file-input">Choose file</label>-->
-          <!--<input type="file" class="custom-file-input" id="restoreStateFromFile" />-->
-          <div class="custom-file">
-            <input type="file" class="custom-file-input" id="restoreStateFromFile">
-            <label class="custom-file-label" for="restoreStateFromFile">Restore state</label>
-          </div>
+        <div class="col-sm">
+          <input id="restoreStateFromFile" type="file" style="display:none;" />
+          <input type="button" class="btn btn-outline-warning" value="Restore state"
+            onclick="document.getElementById('restoreStateFromFile').click();" />
+
         </div>
 
         <div class="col-sm">
-          <button id="startStopTimeButton" class="btn btn-outline-warning"
-                  onclick="startStopTimeButtonClick()">Stop</button>
+          <button id="startStopTimeButton" class="btn btn-outline-warning" onclick="startStopTimeButtonClick()">Stop</button>
+        </div>
+        
+        <div class="col-sm">
+          <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"
+              oninput="updateFilterText(this.value)" id="search-input">
+          </form>
         </div>
 
-
-
-      </div>
-    </div>
-
-    <div class="col-sm-4">
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <div class="navbar-nav mr-auto">
+        <div class="col-sm" id="welcome_section">
+          <p class="p-3 mb-2 bg-success text-white" id="welcome_section_name"></p>
+          <p class="p-3 mb-2 bg-success text-white" id="welcome_section_balance"></p>
         </div>
-        <form class="form-inline my-2 my-lg-0">
-          <input
-            class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"
-            oninput="updateFilterText(this.value)" id="search-input"
-          >
-          <!--<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>-->
-        </form>
+        
+        <div class="col-sm">
+          <button type="button" class="btn btn-outline-success" onclick="addFunds()" id="addUserFunds">Add funds
+          </button>
+        </div>
+
+        <div class="col-sm">
+          <button type="button" class="btn btn-outline-primary" onclick="loadLoginModal()" id="loginButton">Login</button>
+
+          <button type="button" class="btn btn-outline-danger" onclick="handleLogout()" id="logoutButton">Logout</button>
+        </div>
+        
       </div>
-    </div>
+    <!--</div>-->
 
-    <div class="col-sm-3" id="welcome_section">
-      <span class="p-3 mb-2 bg-success text-white" id="welcome_section_name"></span>
-      <span class="p-3 mb-2 bg-success text-white" id="welcome_section_balance"></span>
-    </div>
-
-    <div class="col-sm">
-      <button type="button" class="btn btn-outline-success" onclick="addFunds()" id="addUserFunds">Add funds
-      </button>
-    </div>
-
-    <div class="col-sm">
-      <button type="button" class="btn btn-outline-primary" onclick="loadLoginModal()" id="loginButton">Login
-      </button>
-
-      <button type="button" class="btn btn-outline-danger" onclick="handleLogout()" id="logoutButton">Logout
-      </button>
-    </div>
+    <!--<div class="col-sm-4">-->
+      <!--<div class="collapse navbar-collapse" id="navbarSupportedContent">-->
+        <!--<div class="navbar-nav mr-auto">-->
+        <!--</div>-->
+        <!---->
+      <!--</div>-->
+    <!--</div>-->
   </nav>
   <!--End of navbar-->
 
