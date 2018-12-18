@@ -119,8 +119,8 @@
               <input id="addItemDetails_description" type="text" class="form-control" placeholder="Item description">
             </div>
             <div class="form-group">
-              <label for="addItemDetails_image">Image</label>
-              <input id="addItemDetails_image" type="text" class="form-control" placeholder="Item image here...">
+              <input id="addItemDetails_imageFile" type="file"  onchange="loadImageFile()"><br>
+              <img id="addItemDetails_previewImage" src="" height="200" alt="Image preview...">
             </div>
           </form>
           <div class="modal-footer">
@@ -174,7 +174,7 @@
             </div>
             <div class="form-group">
               <label for="startAuctionDetailes_item_image">Image</label>
-              <input type="text" id="startAuctionDetailes_item_image" class="form-control" placeholder="">
+              <img id="startAuctionDetailes_item_image" style="width: 100px;height: 100px;">
             </div>
           </form>
         </div>
@@ -183,28 +183,6 @@
           <button type="button" class="btn btn-primary" onclick="cancelAuctionModal()">Cancel</button>
           <button type="button" class="btn btn-primary" onclick="startAuction()">Start auction</button>
         </div>
-
-        <!--<div class="modal-field">-->
-          <!--<form class="modal-field" id="startAuctionDetailes">-->
-            <!--<label for="startAuctionDetailes_name">Name</label>-->
-            <!--<input id="" type="text" readonly="readonly">-->
-            <!--<label for="">Description</label>-->
-            <!--<input id="startAuctionDetailes_description" type="text">-->
-            <!--<label for="">Start price</label>-->
-            <!--<input id="startAuctionDetailes_start_price" type="text">-->
-            <!--<label for="">Final price</label>-->
-            <!--<input id="startAuctionDetailes_final_price" type="text">-->
-            <!--<label for="">Price reduction time</label>-->
-            <!--<input id="startAuctionDetailes_price_reduction_time" type="text">-->
-            <!--<label for="">Auction time</label>-->
-            <!--<input id="startAuctionDetailes_auction_time" type="text">-->
-            <!--<label for="">Image</label>-->
-            <!--<input id="startAuctionDetailes_item_image" type="text">-->
-            <!--<input type="button" value="Start" onclick="startAuction()">-->
-            <!--<input type="button" value="Cancel auction" onclick="cancelAuctionModal()">-->
-          <!--</form>-->
-        <!--</div>-->
-        <!--<button onclick="cancelAddItem()">Cancel!</button>-->
       </div>
     </div>
   </div>
@@ -230,8 +208,8 @@
               <input id="editItemForm_description" type="text" class="form-control">
             </div>
             <div class="form-group">
-              <label for="editItemForm_image">Image</label>
-              <input id="editItemForm_image" type="text" class="form-control">
+              <input id="editItemDetails_imageFile" type="file"  onchange="editItemLoadImageFile()">
+              <img id="editItemForm_image" style="width: 100px;height: 100px;">
             </div>
           </form>
         </div>

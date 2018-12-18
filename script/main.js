@@ -106,7 +106,7 @@ function showEditItemModal(i) {
   pendingEditItemId = i;
   document.getElementById("editItemForm_name").value = itemsList[i].name;
   document.getElementById("editItemForm_description").value = itemsList[i].description;
-  document.getElementById("editItemForm_image").value = itemsList[i].image;
+  document.getElementById("editItemForm_image").src = itemsList[i].image;
 }
 function showAuctionModal(i) {
   startAuctionModal.style.display = "block";
@@ -120,7 +120,8 @@ function showAuctionModal(i) {
   // var auction_time = auctionDetails[5].value = 20;
   var name = document.getElementById("startAuctionDetailes_name").value = itemsList[i].name;
   var description = document.getElementById("startAuctionDetailes_description").value = itemsList[i].description;
-  var image = document.getElementById("startAuctionDetailes_item_image").value = itemsList[i].image;
+  
+  var image = document.getElementById("startAuctionDetailes_item_image").src = itemsList[i].image;
 
   var start_price = document.getElementById("startAuctionDetailes_start_price").value = 500;
 
@@ -261,15 +262,48 @@ function handleUserCreation() {
 function addItem() {
   var itemName = document.getElementById("addItemDetails_item_name").value;
   var itemDescription = document.getElementById("addItemDetails_description").value;
-  var itemImage = document.getElementById("addItemDetails_image").value;
+  var itemImage = pendingImageDataUrl;
+  pendingImageDataUrl = null;
   itemsList.push({
     "name":itemName,
     "description":itemDescription,
     "image":itemImage
-    // "owner" : currentUser
   });
   renderList(itemsList);
 }
+
+var pendingImageDataUrl = null;
+
+function loadImageFile() {
+  var preview = document.getElementById('addItemDetails_previewImage');
+  var file    = document.getElementById('addItemDetails_imageFile').files[0];
+  var reader  = new FileReader();
+  
+  reader.addEventListener("load", function () {
+    console.log(reader.result);
+    preview.src = reader.result;
+    pendingImageDataUrl = reader.result;
+  }, false);
+  
+  if (file) {
+    reader.readAsDataURL(file);
+  }
+}
+
+function editItemLoadImageFile() {
+  var preview = document.getElementById('editItemForm_image');
+  var file    = document.getElementById('editItemDetails_imageFile').files[0];
+  var reader  = new FileReader();
+  
+  reader.addEventListener("load", function () {
+    preview.src = reader.result;
+  }, false);
+  
+  if (file) {
+    reader.readAsDataURL(file);
+  }
+}
+
 
 var sortInfo = {
   "auctions" : {
@@ -336,7 +370,7 @@ function updateSortOrder(tableName, fieldName) {
 function renderList(items) {
   if(filterText != ""){
     items = items.filter(function(obj) {
-      return containsText(obj, filterText);
+      return containsText(obj, filterText, ["image"]);
     });
   }
   if(sortInfo["items"].sortedBy != null){
@@ -358,7 +392,14 @@ function renderList(items) {
     h+= "<tr>";
     h+= "<td>" + highlightIfContainsText(items[i].name, filterText, disableHighLight) + "</td>";
     h+= "<td>" + highlightIfContainsText(items[i].description, filterText, disableHighLight) + "</td>";
-    h+= "<td>" + items[i].image + "</td>";
+    
+    //Some items contain text instead of image data URL, so we check length, if it's too short then it is text
+    if(items[i].image == null || items[i].image.length < 50 ){
+      h+= "<td>" + items[i].image + "</td>";
+    } else {
+      h+= "<td><img src=\"" + items[i].image + "\" style=\"width:100px;height:100px;\"></td>";
+    }
+    
     // h+= "<td><button onclick=\"startAuction("+i+")\">Start auction</button>"
     h+= "<td><button type='button' class='btn btn-primary' data-toggle='modal' data-target='startAuction_modal' onclick=\"showAuctionModal("+i+")\">Start" +
         " auction</button>";
@@ -374,7 +415,7 @@ function editItemData() {
 function renderStartAuction(items) {
   if(filterText != ""){
     items = items.filter(function(obj) {
-      return containsText(obj, filterText);
+      return containsText(obj, filterText, ["image"]);
     });
   }
   
@@ -386,6 +427,11 @@ function renderStartAuction(items) {
   var h = "<table>" ;
   h += "<thead><tr>";
   h += "<th onclick='updateSortOrder(\"auctions\",\"name\")'>Item name" + getHeaderSortIndicator("auctions","name") + "</th>";
+  
+  h += "<th onclick='updateSortOrder(\"auctions\",\"description\")'>Description" + getHeaderSortIndicator("auctions","name") + "</th>";
+  
+  h += "<th onclick='updateSortOrder(\"auctions\",\"image\")'>Image" + getHeaderSortIndicator("auctions","name") + "</th>";
+  
   h += "<th onclick='updateSortOrder(\"auctions\",\"left_time\")'>Time left" + getHeaderSortIndicator("auctions","left_time") + "</th>";
   h += "<th onclick='updateSortOrder(\"auctions\",\"current_price\")'>Current price" + getHeaderSortIndicator("auctions","current_price") + "</th>";
   h += "<th onclick='updateSortOrder(\"auctions\",\"minimal_price\")'>Minimal price" + getHeaderSortIndicator("auctions","minimal_price") + "</th>";
@@ -399,6 +445,17 @@ function renderStartAuction(items) {
   for (var i = 0; i < items.length; i++) {
     h+= "<tr>";
     h+= "<td>" + highlightIfContainsText(items[i].name, filterText, disableHighLight) + "</td>";
+    
+    h+= "<td>" + highlightIfContainsText(items[i].description, filterText, disableHighLight) + "</td>";
+  
+    if(items[i].image == null || items[i].image.length < 50 ){
+      h+= "<td>" + items[i].image + "</td>";
+    } else {
+      h+= "<td><img src=\"" + items[i].image + "\" style=\"width:100px;height:100px;\"></td>";
+    }
+    
+    
+    
     h+= "<td>" + highlightIfContainsText(toHHMMSS(items[i].left_time), filterText, disableHighLight) + "</td>";
     h+= "<td>" + highlightIfContainsText(toCurrencyString(items[i].current_price), filterText, disableHighLight) + "</td>";
     h+= "<td>" + highlightIfContainsText(toCurrencyString(items[i].minimal_price), filterText, disableHighLight) + "</td>";
@@ -494,7 +551,7 @@ function startAuction() {
   // var auctionDetails = document.getElementById("startAuctionDetailes");
   var name = document.getElementById("startAuctionDetailes_name").value;
   var description = document.getElementById("startAuctionDetailes_description").value;
-  var image = document.getElementById("startAuctionDetailes_item_image").value;
+  var image = document.getElementById("startAuctionDetailes_item_image").src;
   var start_price = document.getElementById("startAuctionDetailes_start_price").value;;
   var finish_price = document.getElementById("startAuctionDetailes_final_price").value;
   var price_reduction_time = document.getElementById("startAuctionDetailes_price_reduction_time").value;
@@ -522,7 +579,7 @@ var pendingEditItemId = null;
 function editItemModalOk() {
   var name = document.getElementById("editItemForm_name").value;
   var description = document.getElementById("editItemForm_description").value;
-  var image = document.getElementById("editItemForm_image").value;
+  var image = document.getElementById("editItemForm_image").src;
   itemsList[pendingEditItemId].name = name;
   itemsList[pendingEditItemId].description = description;
   itemsList[pendingEditItemId].image = image;
@@ -642,8 +699,11 @@ function isSubstring(s, substr) {
   return (String(s).search(new RegExp(substr, "i"))) != -1;
 }
 
-function containsText(obj, text) {
+function containsText(obj, text, ignoreFields) {
   for (var key in obj) {
+    if(ignoreFields && ignoreFields.includes(key)){
+      continue;
+    }
     if (obj.hasOwnProperty(key)) {
       if (isSubstring(obj[key], text)) {
         return true;
