@@ -1,4 +1,7 @@
 # Internet auction
+##Introduction  
+Realization of [Dutch auction](https://en.wikipedia.org/wiki/Dutch_auction)  
+Basics: auction starts with the highest price and price decreases until buyer is found. 
 ### How to use
 
 1.Open in project folder file - main.html  

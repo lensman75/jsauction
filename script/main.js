@@ -24,6 +24,7 @@ var addFundsButton = document.getElementById("addUserFunds").style.display = "no
 var welcomeUserInfoSection = document.getElementById("welcome_section").style.display = "none";
 var addItemUserButton = document.getElementById("addItemButton").style.display = "none";
 
+
 // // When the user clicks on <span> (x), close the modal
 spanModalCloseLogin.onclick = function() {
   loginModal.style.display = "none";
@@ -171,13 +172,15 @@ function handleLogin() {
     document.getElementById("addItemButton").style.display = "block";
     document.getElementById("welcome_section").style.display = "block";
     var un = document.getElementById("loginForm_login").value;
-    document.getElementById("welcome_section_name").innerHTML = "Hello " + currentUser.name;
-    document.getElementById("welcome_section_balance").innerHTML = "Your balance is " + currentUser.balance + "$";
+    // document.getElementById("welcome_section_name").innerHTML = currentUser.name;
+    // document.getElementById("welcome_section_balance").innerHTML = "Your balance is " + currentUser.balance + "$";
     document.getElementById("loginButton").style.display = "none";
     document.getElementById("itemList").style.display = "block";
     document.getElementById("addUserFunds").style.display = "block";
     loginModal.style.display = "none";
     document.getElementById("loginButton").style.display = "none";
+    // document.getElementById("stopAuctionTableHeader").style.display = "block";
+    // document.getElementById("buyItemTableHeader").style.display = "block";
     renderList(itemsList);
     renderUserName();
     renderFunds();
@@ -212,13 +215,13 @@ function addFunds() {
 
 function renderFunds() {
   if (currentUser != null) {
-    document.getElementById("welcome_section_balance").innerHTML = "Your balance " + toCurrencyString(currentUser.balance) + " $";
+    document.getElementById("welcome_section_balance").innerHTML = "$" + toCurrencyString(currentUser.balance);
   }
 }
 
 function renderUserName() {
   if (currentUser != null) {
-    document.getElementById("welcome_section_name").innerHTML = "Hello " + currentUser.name + "!";
+    document.getElementById("welcome_section_name").innerHTML = currentUser.name;
   }
 }
 
@@ -387,8 +390,10 @@ function renderStartAuction(items) {
   h += "<th onclick='updateSortOrder(\"auctions\",\"current_price\")'>Current price" + getHeaderSortIndicator("auctions","current_price") + "</th>";
   h += "<th onclick='updateSortOrder(\"auctions\",\"minimal_price\")'>Minimal price" + getHeaderSortIndicator("auctions","minimal_price") + "</th>";
   h += "<th onclick='updateSortOrder(\"auctions\",\"duration\")'>Auction end time" + getHeaderSortIndicator("auctions","duration") + "</th>";
-  h += "<th>Stop auction</th>";
-  h += "<th>Buy item</th>";
+  if(currentUser != null){
+    h += "<th>Stop auction</th>";
+    h += "<th>Buy item</th>";
+  }
   h += "<tbody>";
   const disableHighLight = filterText == "";
   for (var i = 0; i < items.length; i++) {
@@ -398,20 +403,22 @@ function renderStartAuction(items) {
     h+= "<td>" + highlightIfContainsText(toCurrencyString(items[i].current_price), filterText, disableHighLight) + "</td>";
     h+= "<td>" + highlightIfContainsText(toCurrencyString(items[i].minimal_price), filterText, disableHighLight) + "</td>";
     h+= "<td>" + highlightIfContainsText(toHHMMSS(items[i].duration), filterText, disableHighLight) + "</td>";
-    if (currentUser != null && currentUser.id == items[i].owner.id){
-    h += "<td><button class=\"usrControl\" onclick=\"stopAuction("+i+")\">Stop" +
-        " auction</button></td>"; }
-    else {
-      h += "<td></td>";
-    }
-    if (currentUser != null && !(currentUser.id == items[i].owner.id)){
-      var disableButton = "";
-      if (currentUser.balance < items[i].current_price){
-        disableButton = "disabled";
+    if(currentUser != null) {
+      if (currentUser != null && currentUser.id == items[i].owner.id){
+      h += "<td><button class=\"usrControl\" onclick=\"stopAuction("+i+")\">Stop" +
+          " auction</button></td>"; }
+      else {
+        h += "<td></td>";
       }
-    h += "<td><button class=\"usrControl\" onclick=\"buyItem("+i+")\"" + disableButton +">Buy item</button></td>";}
-    else {
-      h += "<td></td>";
+      if (currentUser != null && !(currentUser.id == items[i].owner.id)){
+        var disableButton = "";
+        if (currentUser.balance < items[i].current_price){
+          disableButton = "disabled";
+        }
+      h += "<td><button class=\"usrControl\" onclick=\"buyItem("+i+")\"" + disableButton +">Buy item</button></td>";}
+      else {
+        h += "<td></td>";
+      }
     }
   }
   document.getElementById("startedLot").innerHTML = h;

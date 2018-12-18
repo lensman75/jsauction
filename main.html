@@ -250,26 +250,18 @@
     <div class="container">
       <div class="row">
 
-        <div class="col-sm">
-          <button type="button" class="btn btn-outline-primary" onclick="loadLoginModal()" id="loginButton">Login
-          </button>
 
-          <button type="button" class="btn btn-outline-danger" onclick="handleLogout()" id="logoutButton">Logout
-          </button>
-        </div>
 
-        <div class="col-sm">
-          <button type="button" class="btn btn-outline-success" onclick="addFunds()" id="addUserFunds">Add funds
-          </button>
-        </div>
+
 
         <div class="col-sm">
           <button id="addItemButton" class="btn btn-outline-warning" onclick="loadAddItemModal()">addItem</button>
         </div>
 
         <div class="col-sm">
-          <button id="downloadStateButton" class="btn btn-outline-warning" onclick="downloadStateButtonClick()">Download
-                                                                                                   data</button>
+          <button id="downloadStateButton" class="btn btn-outline-warning"
+                  onclick="downloadStateButtonClick()">Save state
+          </button>
         </div>
 
         <div class="col-sm-4">
@@ -278,7 +270,7 @@
           <!--<input type="file" class="custom-file-input" id="restoreStateFromFile" />-->
           <div class="custom-file">
             <input type="file" class="custom-file-input" id="restoreStateFromFile">
-            <label class="custom-file-label" for="restoreStateFromFile">Choose file</label>
+            <label class="custom-file-label" for="restoreStateFromFile">Restore state</label>
           </div>
         </div>
 
@@ -286,6 +278,8 @@
           <button id="startStopTimeButton" class="btn btn-outline-warning"
                   onclick="startStopTimeButtonClick()">Stop</button>
         </div>
+
+
 
       </div>
     </div>
@@ -299,9 +293,27 @@
             class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"
             oninput="updateFilterText(this.value)" id="search-input"
           >
-          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+          <!--<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>-->
         </form>
       </div>
+    </div>
+
+    <div class="col-sm-3" id="welcome_section">
+      <span class="p-3 mb-2 bg-success text-white" id="welcome_section_name"></span>
+      <span class="p-3 mb-2 bg-success text-white" id="welcome_section_balance"></span>
+    </div>
+
+    <div class="col-sm">
+      <button type="button" class="btn btn-outline-success" onclick="addFunds()" id="addUserFunds">Add funds
+      </button>
+    </div>
+
+    <div class="col-sm">
+      <button type="button" class="btn btn-outline-primary" onclick="loadLoginModal()" id="loginButton">Login
+      </button>
+
+      <button type="button" class="btn btn-outline-danger" onclick="handleLogout()" id="logoutButton">Logout
+      </button>
     </div>
   </nav>
   <!--End of navbar-->
@@ -311,10 +323,9 @@
   <!--<button style="display:none" id="logoutButton" onclick="handleLogout()">Logout</button>-->
   <!--<button style="display:none" id="addItemButton" onclick="loadAddItemModal()">addItem</button>-->
   <!--<button style="display: none" id="addUserFunds" onclick="addFunds()">Earn more funds</button>-->
-  <div id="welcome_section" style="display: none;">
-    <span id="welcome_section_name">Admin</span>
-    <span id="welcome_section_balance">500 $</span>
-  </div>
+  <!--<div id="welcome_section" style="display: none;">-->
+
+  <!--</div>-->
   <div id="lotList">
     <ul id="itemList" style="display: none;"></ul>
     <ul id="startedLot"></ul>
