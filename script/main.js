@@ -531,6 +531,8 @@ function renderAuctionAsTable(items) {
     h+= "<td>" + highlightIfContainsText(toHHMMSS(items[i].duration), filterText, disableHighLight) + "</td>";
     if(currentUser != null) {
       if (currentUser != null && currentUser.id == items[i].owner.id){
+        console.log("CurrentUser",currentUser);
+        console.log("Items [i] owner", items[i].owner);
       h += "<td><button class=\"usrControl\" onclick=\"stopAuction("+i+")\">Stop" +
           " auction</button></td>"; }
       else {
@@ -724,6 +726,13 @@ function restoreStateFromData(data) {
     _activeList[i].owner = getUserById(_users,_activeList[i].owner.id);
   }
 //  TODO Check for errors
+  var maxUserID = -1;
+  for (var i =0; i < _users.length; i+=1){
+    if (_users[i].id > maxUserID) {
+      maxUserID = _users[i].id;
+    }
+  }
+  nextUserId = maxUserID + 1;
   allusers = _users;
   itemsList = _items;
   activeList = _activeList;
