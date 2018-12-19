@@ -27,9 +27,9 @@ var welcomeUserInfoSection = document.getElementById("welcome_section").style.di
 // var welcomeNameSection = document.getElementById("welcome_balance_section").style.display = "none";
 // var welcomeBalanceSection = document.getElementById("welcome_name_section").style.display = "none";
 var addItemUserButton = document.getElementById("addItemButton").style.display = "none";
+var buttonShowVariants = document.getElementById("buttonShowVariants").style.display = "none";
 
 var loc = {};
-
 
 
 
@@ -182,6 +182,7 @@ function handleLogin() {
     // document.getElementById("welcome_section_name").style.display = "block";
     // document.getElementById("welcome_section_balance").style.display = "block";
     // welcomeNameSection.style.display = "block";
+    document.getElementById("buttonShowVariants").style.display = "block";
     
     var un = document.getElementById("loginForm_login").value;
     document.getElementById("loginButton").style.display = "none";
@@ -191,6 +192,8 @@ function handleLogin() {
     document.getElementById("loginButton").style.display = "none";
     document.getElementById("startedLot").style.display = "block";
     document.getElementById("galary_section").style.display = "none";
+    document.getElementById("signUpButton").style.display = "none";
+    
     renderList(itemsList);
     renderStartAuction(activeList);
     renderUserName();
@@ -214,11 +217,13 @@ function handleLogout() {
   
   // document.getElementById("welcome_section_name").style.display = "none";
   // document.getElementById("welcome_section_balance").style.display = "none";
+  document.getElementById("buttonShowVariants").style.display = "none";
   
   document.getElementById("itemList").style.display = "none";
   document.getElementById("addUserFunds").style.display = "none";
   document.getElementById("startedLot").style.display = "none";
   document.getElementById("galary_section").style.display = "block";
+  document.getElementById("signUpButton").style.display = "block";
   renderList(itemsList);
   renderStartAuction(activeList);
 }
@@ -239,6 +244,7 @@ function renderFunds() {
 
 function renderUserName() {
   if (currentUser != null) {
+    console.log(currentUser);
     document.getElementById("welcome_section_name").innerHTML = currentUser.name;
   }
 }
@@ -395,33 +401,38 @@ function renderList(items) {
     items.sort(getSortFunction(sortInfo["items"].sortedBy, sortInfo["items"].sortDirection));
     console.log("sort", items);
   }
-  var h = "<table>" ;
-  h += "<thead><tr>";
-  h += "<th onclick='updateSortOrder(\"items\",\"name\")'>Item name" + getHeaderSortIndicator("items","name") + "</th>";
-  h += "<th onclick='updateSortOrder(\"items\",\"description\")'>Description" + getHeaderSortIndicator("items","description") + "</th>";
-  h += "<th>Image</th>";
-  h += "<th>Start auction</th>";
-  h += "<th>Edit item</th>"
-  h += "<th>Delete item</th>";
+  var h = "<table class=\"w-100 table\">" ;
+  h += "<thead class=\"thead-dark\"><tr>";
+  h += "<th class=\"text-center\" onclick='updateSortOrder(\"items\",\"name\")'>Item name" + getHeaderSortIndicator("items","name") + "</th>";
+  h += "<th class=\"text-center\" onclick='updateSortOrder(\"items\",\"description\")'>Description" + getHeaderSortIndicator("items","description") + "</th>";
+  h += "<th class=\"text-center\">Image</th>";
+  h += "<th class=\"text-center\">Start auction</th>";
+  h += "<th class=\"text-center\">Edit item</th>"
+  h += "<th class=\"text-center\">Delete item</th>";
   h += "<tbody>";
   const disableHighLight = filterText == "";
   for (var i = 0; i < items.length; i++) {
     h+= "<tr>";
-    h+= "<td>" + highlightIfContainsText(items[i].name, filterText, disableHighLight) + "</td>";
-    h+= "<td>" + highlightIfContainsText(items[i].description, filterText, disableHighLight) + "</td>";
+    h+= "<td class=\"text-center align-middle\">" + highlightIfContainsText(items[i].name, filterText, disableHighLight) + "</td>";
+    h+= "<td class=\"text-center align-middle\">" + highlightIfContainsText(items[i].description, filterText, disableHighLight) + "</td>";
     
     //Some items contain text instead of image data URL, so we check length, if it's too short then it is text
     if(items[i].image == null || items[i].image.length < 50 ){
-      h+= "<td>" + items[i].image + "</td>";
+      h+= "<td class=\"text-center align-middle\">" + items[i].image + "</td>";
     } else {
-      h+= "<td><img src=\"" + items[i].image + "\" style=\"width:100px;height:100px;\"></td>";
+      h+= "<td class=\"text-center align-middle\"><img src=\"" + items[i].image + "\"" +
+        " style=\"width:100px;height:100px;\"></td>";
     }
     
     // h+= "<td><button onclick=\"startAuction("+i+")\">Start auction</button>"
-    h+= "<td><button type='button' class='btn btn-primary' data-toggle='modal' data-target='startAuction_modal' onclick=\"showAuctionModal("+i+")\">Start" +
+    h+= "<td class=\"text-center align-middle\"><button type='button' class='btn btn-primary' data-toggle='modal'" +
+      " data-target='startAuction_modal'" +
+      " onclick=\"showAuctionModal("+i+")\">Start" +
         " auction</button>";
-    h+= "<td><button class='btn btn-info' onclick='showEditItemModal(" + i + ")'>Edit item</button>";
-    h+= "<td><button class='btn btn-danger' onclick=\"deleteElementFromList("+i+")\">Delete item</button>";
+    h+= "<td class=\"text-center align-middle\"><button class='btn btn-info' onclick='showEditItemModal(" + i + ")'>Edit" +
+      " item</button>";
+    h+= "<td class=\"text-center align-middle\"><button class='btn btn-danger' onclick=\"deleteElementFromList("+i+")\">Delete" +
+      " item</button>";
   }
   document.getElementById("itemList").innerHTML = h;
 }
@@ -493,47 +504,47 @@ function renderAuctionAsTable(items) {
     items.sort(getSortFunction(sortInfo["auctions"].sortedBy, sortInfo["auctions"].sortDirection));
     console.log("sort", items);
   }
-  var h = "<table>" ;
-  h += "<thead><tr>";
-  h += "<th onclick='updateSortOrder(\"auctions\",\"name\")'>Item name" + getHeaderSortIndicator("auctions","name") + "</th>";
+  var h = "<table class=\"w-100 table\">" ;
+  h += "<thead class=\"thead-dark\"><tr>";
+  h += "<th class=\"text-center\" onclick='updateSortOrder(\"auctions\",\"name\")'>Item name" + getHeaderSortIndicator("auctions","name") + "</th>";
   
-  h += "<th onclick='updateSortOrder(\"auctions\",\"description\")'>Description" + getHeaderSortIndicator("auctions","name") + "</th>";
+  h += "<th class=\"text-center\" onclick='updateSortOrder(\"auctions\",\"description\")'>Description" + getHeaderSortIndicator("auctions","name") + "</th>";
   
-  h += "<th onclick='updateSortOrder(\"auctions\",\"image\")'>Image" + getHeaderSortIndicator("auctions","name") + "</th>";
+  h += "<th class=\"text-center\" onclick='updateSortOrder(\"auctions\",\"image\")'>Image" + getHeaderSortIndicator("auctions","name") + "</th>";
   
-  h += "<th onclick='updateSortOrder(\"auctions\",\"left_time\")'>Time left" + getHeaderSortIndicator("auctions","left_time") + "</th>";
-  h += "<th onclick='updateSortOrder(\"auctions\",\"current_price\")'>Current price" + getHeaderSortIndicator("auctions","current_price") + "</th>";
-  h += "<th onclick='updateSortOrder(\"auctions\",\"minimal_price\")'>Minimal price" + getHeaderSortIndicator("auctions","minimal_price") + "</th>";
-  h += "<th onclick='updateSortOrder(\"auctions\",\"duration\")'>Auction end time" + getHeaderSortIndicator("auctions","duration") + "</th>";
+  h += "<th class=\"text-center\" onclick='updateSortOrder(\"auctions\",\"left_time\")'>Time left" + getHeaderSortIndicator("auctions","left_time") + "</th>";
+  h += "<th class=\"text-center\" onclick='updateSortOrder(\"auctions\",\"current_price\")'>Current price" + getHeaderSortIndicator("auctions","current_price") + "</th>";
+  h += "<th class=\"text-center\" onclick='updateSortOrder(\"auctions\",\"minimal_price\")'>Minimal price" + getHeaderSortIndicator("auctions","minimal_price") + "</th>";
+  h += "<th class=\"text-center\" onclick='updateSortOrder(\"auctions\",\"duration\")'>Auction end time" + getHeaderSortIndicator("auctions","duration") + "</th>";
   if(currentUser != null){
-    h += "<th>Stop auction</th>";
-    h += "<th>Buy item</th>";
+    h += "<th class=\"text-center\">Stop auction</th>";
+    h += "<th class=\"text-center\">Buy item</th>";
   }
   h += "<tbody>";
   const disableHighLight = filterText == "";
   for (var i = 0; i < items.length; i++) {
     h+= "<tr>";
-    h+= "<td>" + highlightIfContainsText(items[i].name, filterText, disableHighLight) + "</td>";
+    h+= "<td class=\"text-center align-middle\">" + highlightIfContainsText(items[i].name, filterText, disableHighLight) + "</td>";
     
-    h+= "<td>" + highlightIfContainsText(items[i].description, filterText, disableHighLight) + "</td>";
+    h+= "<td class=\"text-center align-middle\">" + highlightIfContainsText(items[i].description, filterText, disableHighLight) + "</td>";
   
     if(items[i].image == null || items[i].image.length < 50 ){
-      h+= "<td>" + items[i].image + "</td>";
+      h+= "<td class=\"text-center align-middle\">" + items[i].image + "</td>";
     } else {
-      h+= "<td><img src=\"" + items[i].image + "\" style=\"width:100px;height:100px;\"></td>";
+      h+= "<td class=\"text-center align-middle\"><img src=\"" + items[i].image + "\" style=\"width:100px;height:100px;\"></td>";
     }
     
     
     
-    h+= "<td>" + highlightIfContainsText(toHHMMSS(items[i].left_time), filterText, disableHighLight) + "</td>";
-    h+= "<td>" + highlightIfContainsText(toCurrencyString(items[i].current_price), filterText, disableHighLight) + "</td>";
-    h+= "<td>" + highlightIfContainsText(toCurrencyString(items[i].minimal_price), filterText, disableHighLight) + "</td>";
-    h+= "<td>" + highlightIfContainsText(toHHMMSS(items[i].duration), filterText, disableHighLight) + "</td>";
+    h+= "<td class=\"text-center align-middle\">" + highlightIfContainsText(toHHMMSS(items[i].left_time), filterText, disableHighLight) + "</td>";
+    h+= "<td class=\"text-center align-middle\">" + highlightIfContainsText(toCurrencyString(items[i].current_price), filterText, disableHighLight) + "</td>";
+    h+= "<td class=\"text-center align-middle\">" + highlightIfContainsText(toCurrencyString(items[i].minimal_price), filterText, disableHighLight) + "</td>";
+    h+= "<td class=\"text-center align-middle\">" + highlightIfContainsText(toHHMMSS(items[i].duration), filterText, disableHighLight) + "</td>";
     if(currentUser != null) {
       if (currentUser != null && currentUser.id == items[i].owner.id){
         console.log("CurrentUser",currentUser);
         console.log("Items [i] owner", items[i].owner);
-      h += "<td><button class=\"usrControl\" onclick=\"stopAuction("+i+")\">Stop" +
+      h += "<td class=\"text-center align-middle\"><button class=\"usrControl btn btn-danger\" onclick=\"stopAuction("+i+")\">Stop" +
           " auction</button></td>"; }
       else {
         h += "<td></td>";
@@ -543,9 +554,9 @@ function renderAuctionAsTable(items) {
         if (currentUser.balance < items[i].current_price){
           disableButton = "disabled";
         }
-      h += "<td><button class=\"usrControl\" onclick=\"buyItem("+i+")\"" + disableButton +">Buy item</button></td>";}
+      h += "<td class=\"text-center align-middle\"><button class=\"usrControl btn btn-success\" onclick=\"buyItem("+i+")\"" + disableButton +">Buy item</button></td>";}
       else {
-        h += "<td></td>";
+        h += "<td class=\"text-center align-middle\"></td>";
       }
     }
   }
@@ -825,4 +836,19 @@ function toHHMMSS (x) {
   if (minutes < 10) {minutes = "0"+minutes;}
   if (seconds < 10) {seconds = "0"+seconds;}
   return hours+':'+minutes+':'+seconds;
+}
+
+function showMyItemTable() {
+  document.getElementById("startedLot").style.display = "none";
+  document.getElementById("itemList").style.display = "block";
+}
+
+function showAuctionTable() {
+  document.getElementById("startedLot").style.display = "block";
+  document.getElementById("itemList").style.display = "none";
+}
+
+function showItemAuctionTable() {
+  document.getElementById("startedLot").style.display = "block";
+  document.getElementById("itemList").style.display = "block";
 }
