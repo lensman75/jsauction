@@ -8,16 +8,38 @@ var spanModalCloseLogin = document.getElementsByClassName("close")[0];
 var spanModalCloseRegistration = document.getElementsByClassName("close")[1];
 var spanModalCloseWelcome = document.getElementsByClassName("close")[2];
 var spanModalCloseAddItem = document.getElementsByClassName("close")[3];
+
+// currently logged in user
 var currentUser = null;
-var allusers = [];
-var itemsList = [];
-var activeList = [];
+
+// all users in system
+var allUsers = [];
+
+// items for current user, it is a reference to currentUser.items
+var currentUserItems = [];
+
+// all auctions in the system
+var allAuctions = [];
+
+// index of item on which auction modal is opened
 var pendingAuctionItemId;
+
+// id of next user. when user is created it increases
 var nextUserId = 0;
+
+// should auction update their state. setting it to false will freeze all auctions
 var isTimeRunning = true;
+
+// contains picture which is added to item during item creation
 var pendingImageDataUrl = null;
+
+// index of item in currentUserItems on which editItemModal is opened
 var pendingEditItemId = null;
+
+// contains text used during filtering
 var filterText = document.getElementById("search-input").value;
+
+// contains information about sorting for item and auctions tables
 var sortInfo = {
   "auctions" : {
     "sortedBy" : null,
@@ -128,17 +150,17 @@ function cancelAuctionModal() {
 function showEditItemModal(i) {
   editItemModal.style.display = "block";
   pendingEditItemId = i;
-  document.getElementById("editItemForm_name").value = itemsList[i].name;
-  document.getElementById("editItemForm_description").value = itemsList[i].description;
-  document.getElementById("editItemForm_image").src = itemsList[i].image;
+  document.getElementById("editItemForm_name").value = currentUserItems[i].name;
+  document.getElementById("editItemForm_description").value = currentUserItems[i].description;
+  document.getElementById("editItemForm_image").src = currentUserItems[i].image;
 }
 
 
 function showAuctionModal(i) {
   startAuctionModal.style.display = "block";
-  document.getElementById("startAuctionDetailes_name").value = itemsList[i].name;
-  document.getElementById("startAuctionDetailes_description").value = itemsList[i].description;
-  document.getElementById("startAuctionDetailes_item_image").src = itemsList[i].image;
+  document.getElementById("startAuctionDetailes_name").value = currentUserItems[i].name;
+  document.getElementById("startAuctionDetailes_description").value = currentUserItems[i].description;
+  document.getElementById("startAuctionDetailes_item_image").src = currentUserItems[i].image;
   document.getElementById("startAuctionDetailes_start_price").value = 500;
   document.getElementById("startAuctionDetailes_final_price").value = 50;
   document.getElementById("startAuctionDetailes_price_reduction_time").value = 15;
@@ -180,9 +202,9 @@ function getUserById(users, id) {
 function handleLogin() {
   var userName = document.getElementById("loginForm_login").value;
   var userPassword = document.getElementById("loginForm_password").value;
-  if (userLoginExist(allusers, userName, userPassword)) {
-    currentUser = getUserByName(allusers,userName);
-    itemsList = currentUser.items;
+  if (userLoginExist(allUsers, userName, userPassword)) {
+    currentUser = getUserByName(allUsers,userName);
+    currentUserItems = currentUser.items;
     document.getElementById("logoutButton").style.display = "block";
     document.getElementById("addItemButton").style.display = "block";
     document.getElementById("welcome_section").style.display = "";
@@ -198,8 +220,8 @@ function handleLogin() {
     document.getElementById("galary_section").style.display = "none";
     document.getElementById("signUpButton").style.display = "none";
     
-    renderList(itemsList);
-    renderStartAuction(activeList);
+    renderList(currentUserItems);
+    renderStartAuction(allAuctions);
     renderUserName();
     renderFunds();
   }
@@ -212,8 +234,8 @@ function handleLogin() {
 
 
 function handleLogout() {
-  currentUser.items = itemsList;
-  itemsList = [];
+  currentUser.items = currentUserItems;
+  currentUserItems = [];
   currentUser = null;
   document.getElementById("logoutButton").style.display = "none";
   document.getElementById("addItemButton").style.display = "none";
@@ -227,8 +249,8 @@ function handleLogout() {
   document.getElementById("startedLot").style.display = "none";
   document.getElementById("galary_section").style.display = "block";
   document.getElementById("signUpButton").style.display = "block";
-  renderList(itemsList);
-  renderStartAuction(activeList);
+  renderList(currentUserItems);
+  renderStartAuction(allAuctions);
 }
 
 
@@ -279,9 +301,9 @@ function handleUserCreation() {
     alert("Passwords you entered are not identical");
     return;
   }
-  if (!userExists(allusers,name)) {
+  if (!userExists(allUsers,name)) {
     var currentUser = User.register(name, password);
-    allusers.push(currentUser);
+    allUsers.push(currentUser);
     loadLoginModal();
     document.getElementById("mainFooter").innerHTML = "<div class='alert alert-success'>Welcome to site! Now you can" +
       " have fun! Enter your login and password!</div>";
@@ -297,12 +319,12 @@ function addItem() {
   var itemDescription = document.getElementById("addItemDetails_description").value;
   var itemImage = pendingImageDataUrl;
   pendingImageDataUrl = null;
-  itemsList.push({
+  currentUserItems.push({
     "name":itemName,
     "description":itemDescription,
     "image":itemImage
   });
-  renderList(itemsList);
+  renderList(currentUserItems);
 }
 
 
@@ -382,9 +404,9 @@ function updateSortOrder(tableName, fieldName) {
   sortInfo[tableName].sortedBy = fieldName;
   // viewTable();
   if(tableName == "auctions"){
-    renderStartAuction(activeList);
+    renderStartAuction(allAuctions);
   } else if (tableName == "items"){
-    renderList(itemsList);
+    renderList(currentUserItems);
   } else {
     console.log("Error. Incorrect table name when sorting", tableName, fieldName);
   }
@@ -546,16 +568,16 @@ function renderAuctionAsTable(items) {
 }
 
 function buyItem(i) {
-  if (currentUser != null && currentUser.balance > activeList[i].current_price) {
-    activeList[i].owner.balance += activeList[i].current_price;
-    currentUser.balance -= activeList[i].current_price;
+  if (currentUser != null && currentUser.balance > allAuctions[i].current_price) {
+    allAuctions[i].owner.balance += allAuctions[i].current_price;
+    currentUser.balance -= allAuctions[i].current_price;
     currentUser.items.push({
-      "name" : activeList[i].name,
-      "description" : activeList[i].description,
-      "image" : activeList[i].image
+      "name" : allAuctions[i].name,
+      "description" : allAuctions[i].description,
+      "image" : allAuctions[i].image
     });
     deleteElementFromAuction(i);
-    renderList(itemsList);
+    renderList(currentUserItems);
     renderFunds();
   }
 }
@@ -577,24 +599,24 @@ function stepTime() {
   }
   console.log("Stop time, continue processing");
   var areItemsChanged = false;
-  for (var i =0; i < activeList.length; i++){
+  for (var i =0; i < allAuctions.length; i++){
 
-    if (activeList[i].left_time > 0) {
-      activeList[i].left_time -= 1;
-      if (activeList[i].current_price > activeList[i].minimal_price) {
-        var diff = (activeList[i].max_price - activeList[i].minimal_price)/(activeList[i].price_reduction);
-        activeList[i].current_price -= diff;
+    if (allAuctions[i].left_time > 0) {
+      allAuctions[i].left_time -= 1;
+      if (allAuctions[i].current_price > allAuctions[i].minimal_price) {
+        var diff = (allAuctions[i].max_price - allAuctions[i].minimal_price)/(allAuctions[i].price_reduction);
+        allAuctions[i].current_price -= diff;
       }
 
     }
-    if (activeList[i].duration > 1) {
-      activeList[i].duration -= 1;
+    if (allAuctions[i].duration > 1) {
+      allAuctions[i].duration -= 1;
     }
     else {
-      activeList[i].owner.items.push({
-        "name" : activeList[i].name,
-        "description" : activeList[i].description,
-        "image" : activeList[i].image,
+      allAuctions[i].owner.items.push({
+        "name" : allAuctions[i].name,
+        "description" : allAuctions[i].description,
+        "image" : allAuctions[i].image,
       });
       deleteElementFromAuction(i);
       areItemsChanged = true;
@@ -602,10 +624,10 @@ function stepTime() {
   }
 
   if (areItemsChanged) {
-    renderList(itemsList);
+    renderList(currentUserItems);
   }
   
-  renderStartAuction(activeList);
+  renderStartAuction(allAuctions);
 }
 
 function startAuction() {
@@ -616,7 +638,7 @@ function startAuction() {
   var finish_price = document.getElementById("startAuctionDetailes_final_price").value;
   var price_reduction_time = document.getElementById("startAuctionDetailes_price_reduction_time").value;
   var auction_time = document.getElementById("startAuctionDetailes_auction_time").value;
-  activeList.push({
+  allAuctions.push({
     "name": name,
     "description": description,
     "image": image,
@@ -629,7 +651,7 @@ function startAuction() {
     "owner" : currentUser
   });
   deleteElementFromList(pendingAuctionItemId);
-  renderStartAuction(activeList);
+  renderStartAuction(allAuctions);
   startAuctionModal.style.display = "none";
 }
 
@@ -637,11 +659,11 @@ function editItemModalOk() {
   var name = document.getElementById("editItemForm_name").value;
   var description = document.getElementById("editItemForm_description").value;
   var image = document.getElementById("editItemForm_image").src;
-  itemsList[pendingEditItemId].name = name;
-  itemsList[pendingEditItemId].description = description;
-  itemsList[pendingEditItemId].image = image;
+  currentUserItems[pendingEditItemId].name = name;
+  currentUserItems[pendingEditItemId].description = description;
+  currentUserItems[pendingEditItemId].image = image;
   pendingEditItemId = null;
-  renderList(itemsList);
+  renderList(currentUserItems);
   editItemModal.style.display = "none";
 }
 
@@ -651,24 +673,24 @@ function editItemModalCancel() {
 }
 
 function stopAuction(i) {
-  activeList[i].owner.items.push({
-    "name" : activeList[i].name,
-    "description" : activeList[i].description,
-    "image" : activeList[i].image
+  allAuctions[i].owner.items.push({
+    "name" : allAuctions[i].name,
+    "description" : allAuctions[i].description,
+    "image" : allAuctions[i].image
   });
   deleteElementFromAuction(i);
-  renderStartAuction(activeList);
-  renderList(itemsList);
+  renderStartAuction(allAuctions);
+  renderList(currentUserItems);
 }
 
 function deleteElementFromList(i) {
-  itemsList.splice(i,1);
-  renderList(itemsList);
+  currentUserItems.splice(i,1);
+  renderList(currentUserItems);
 }
 
 function deleteElementFromAuction(i) {
-  activeList.splice(i,1);
-  renderStartAuction(activeList);
+  allAuctions.splice(i,1);
+  renderStartAuction(allAuctions);
 }
 
 function downloadStateButtonClick() {
@@ -678,9 +700,9 @@ function downloadStateButtonClick() {
 
 function createDataFromState() {
   var data = {
-    "users" : allusers,
-    "items" : itemsList,
-    "auctions" : activeList,
+    "users" : allUsers,
+    "items" : currentUserItems,
+    "auctions" : allAuctions,
     "currentUser" : currentUser
   };
   return data;
@@ -708,12 +730,12 @@ function restoreStateFromData(data) {
     }
   }
   nextUserId = maxUserID + 1;
-  allusers = _users;
-  itemsList = _items;
-  activeList = _activeList;
+  allUsers = _users;
+  currentUserItems = _items;
+  allAuctions = _activeList;
   currentUser = _currentUser;
-  renderList(itemsList);
-  renderStartAuction(activeList);
+  renderList(currentUserItems);
+  renderStartAuction(allAuctions);
   renderFunds();
   renderUserName();
 }
@@ -778,8 +800,8 @@ function highlightIfContainsText(obj, text, disable) {
 
 function updateFilterText(text) {
   filterText = text;
-  renderList(itemsList);
-  renderStartAuction(activeList);
+  renderList(currentUserItems);
+  renderStartAuction(allAuctions);
 }
 
 function toCurrencyString(x) {
@@ -825,7 +847,7 @@ function initialSetup() {
   
   setInterval(function () {
     stepTime();
-    // renderStartAuction(activeList);
+    // renderStartAuction(allAuctions);
   }, 1000);
   
   document.getElementById('restoreStateFromFile').addEventListener('change', readStateDataFile, false);
