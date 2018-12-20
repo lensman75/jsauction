@@ -475,7 +475,7 @@ function renderAuctionAsGalary(items) {
   for (var i = 0; i < Math.min(numberRows,numberRowsExisting); i+=1) {
     h += "<div class=\"" + classNameOuterDiv + "\">";
      for (var j = i * numberColumns; j < Math.min((i+1)*numberColumns,items.length); j+=1){
-       h += "<div class=\""+classNameInnerDiv+"\">\n" +
+       h += "<div onclick=\"loadLoginModal()\" class=\""+classNameInnerDiv+"\">\n" +
        "          <img src="+ items[j].image + " alt=\""+items[j].name+"\">\n" +
        "          <p>" + highlightIfContainsText(items[j].name, filterText, disableHighLight) + "</p>\n" +
          "<p>$ " + items[j].current_price + "</p>" +
