@@ -614,6 +614,38 @@ function startAuctionModal_startAuction() {
   var finish_price = document.getElementById("startAuctionDetailes_final_price").value;
   var price_reduction_time = document.getElementById("startAuctionDetailes_price_reduction_time").value;
   var auction_time = document.getElementById("startAuctionDetailes_auction_time").value;
+  var err = [];
+  start_price = parseFloat(start_price);
+  if (isNaN(start_price)) {
+    err.push("Cannot parse start price");
+  } else if (start_price <= 0 ){
+    err.push("Start price should be positive");
+  }
+  finish_price = parseFloat(finish_price);
+  if (isNaN(finish_price)) {
+    err.push("Cannot parse finish price");
+  } else if (finish_price <= 0 ){
+    err.push("Finish price should be positive");
+  }
+  price_reduction_time = parseFloat(price_reduction_time);
+  if (isNaN(price_reduction_time)) {
+    err.push("Cannot parse price reduction time");
+  } else if (price_reduction_time <= 0 ){
+    err.push("Price reduction time should be positive");
+  }
+  auction_time = parseFloat(auction_time);
+  if (isNaN(auction_time)) {
+    err.push("Cannot parse auction time");
+  } else if (auction_time <= 0 ){
+    err.push("Start price should be positive");
+  }
+  if (start_price < finish_price ) {
+    err.push("Start price must be bigger then finish price");
+  }
+  if (err.length > 0 ){
+    alert(err);
+    return;
+  }
   allAuctions.push({
     "name": name,
     "description": description,
