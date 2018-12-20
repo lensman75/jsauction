@@ -407,7 +407,6 @@ function renderItemsTable(items) {
   if(sortInfo["items"].sortedBy != null){
     items = items.slice();
     items.sort(getSortFunction(sortInfo["items"].sortedBy, sortInfo["items"].sortDirection));
-    console.log("sort", items);
   }
   var h = "<table class=\"w-100 table\">" ;
   h += "<thead class=\"thead-dark\"><tr>";
@@ -446,10 +445,8 @@ function renderItemsTable(items) {
 
 function renderAuctions(items) {
   if(currentUser != null){
-    console.log("Render auction as table");
     renderAuctionsAsTable(items);
   } else {
-    console.log("Render auction as galary");
     renderAuctionsAsGallery(items);
   }
 }
@@ -488,17 +485,14 @@ function renderAuctionsAsGallery(auctions) {
 }
 
 function renderAuctionsAsTable(auctions) {
-  console.log("Item.length", auctions.length);
   if(filterText != ""){
     auctions = auctions.filter(function(obj) {
-      return containsText(obj, filterText, ["image", "description", "owner"]);
+      return containsText(obj, filterText, ["image", "owner"]);
     });
-    console.log("Item.length", auctions.length);
   }
   if(sortInfo["auctions"].sortedBy != null){
     auctions = auctions.slice();
     auctions.sort(getSortFunction(sortInfo["auctions"].sortedBy, sortInfo["auctions"].sortDirection));
-    console.log("sort", auctions);
   }
   var h = "<table class=\"w-100 table\">" ;
   h += "<thead class=\"thead-dark\"><tr>";
@@ -531,8 +525,6 @@ function renderAuctionsAsTable(auctions) {
     h+= "<td class=\"text-center align-middle\">" + highlightIfContainsText(toHHMMSS(auctions[i].duration), filterText, disableHighLight) + "</td>";
     if(currentUser != null) {
       if (currentUser != null && currentUser.id == auctions[i].owner.id){
-        console.log("CurrentUser",currentUser);
-        console.log("Items [i] owner", auctions[i].owner);
       h += "<td class=\"text-center align-middle\"><button class=\"usrControl btn btn-danger\" onclick=\"stopAuction("+i+")\">Stop" +
           " auction</button></td>"; }
       else {
@@ -761,7 +753,6 @@ function containsText(obj, text, ignoreFields) {
     }
     if (obj.hasOwnProperty(key)) {
       if (isSubstring(obj[key], text)) {
-        console.log("Contains text", key, text, obj[key]);
         return true;
       }
     }
@@ -803,9 +794,7 @@ function toHHMMSS (x) {
 function showMyItemTable() {
   document.getElementById("startedLot").style.display = "none";
   document.getElementById("itemList").style.display = "block";
-  console.log(document.getElementById("itemList").style.height);
   document.getElementById("itemList").style.height = "100%";
-  console.log(document.getElementById("itemList").style.height);
 }
 
 function showAuctionTable() {
