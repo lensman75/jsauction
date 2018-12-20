@@ -9,6 +9,7 @@ var spanModalCloseLogin = document.getElementsByClassName("close")[0];
 var spanModalCloseRegistration = document.getElementsByClassName("close")[1];
 var spanModalCloseWelcome = document.getElementsByClassName("close")[2];
 var spanModalCloseAddItem = document.getElementsByClassName("close")[3];
+// var spanModalCloseEditItem = document.getElementsByClassName("close")[4];
 var currentUser = null;
 var allusers = [];
 var itemsList = [];
@@ -44,18 +45,23 @@ spanModalCloseWelcome.onclick = function() {
 spanModalCloseAddItem.onclick = function() {
   addItemModal.style.display = "none";
 };
+spanModalCloseEditItem.onclick = function(){
+  document.getElementById("editItem_modal").style.display = "none";
+};
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
   if (event.target == loginModal ||
       event.target == registerModal ||
       event.target == welcomeModal ||
       event.target == addItemModal ||
-      event.target == startAuctionModal) {
+      event.target == startAuctionModal ||
+      event.target == document.getElementById("editItem_modal")) {
     loginModal.style.display = "none";
     registerModal.style.display = "none";
     welcomeModal.style.display = "none";
     addItemModal.style.display = "none";
     startAuctionModal.style.display = "none";
+    document.getElementById("editItem_modal").style.display = "none";
   }
 };
 
