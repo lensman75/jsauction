@@ -803,16 +803,27 @@ function toHHMMSS (x) {
 function showMyItemTable() {
   document.getElementById("startedLot").style.display = "none";
   document.getElementById("itemList").style.display = "block";
+  console.log(document.getElementById("itemList").style.height);
+  document.getElementById("itemList").style.height = "100%";
+  console.log(document.getElementById("itemList").style.height);
 }
 
 function showAuctionTable() {
   document.getElementById("startedLot").style.display = "block";
   document.getElementById("itemList").style.display = "none";
+  document.getElementById("startedLot").style.height = "100%";
+  document.getElementById("itemList").style.height = "0%";
+  document.getElementById("startedLot").style.marginTop = "0";
+  document.getElementById("startedLot").style.paddingTop = "0";
 }
 
 function showItemAndAuctionTable() {
   document.getElementById("startedLot").style.display = "block";
   document.getElementById("itemList").style.display = "block";
+  document.getElementById("startedLot").style.height = "50%";
+  document.getElementById("itemList").style.height = "50%";
+  document.getElementById("startedLot").style.marginTop = "1%";
+  document.getElementById("startedLot").style.paddingTop = "1%";
 }
 
 

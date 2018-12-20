@@ -44,11 +44,20 @@ body
   flex-direction: column
   margin-top: 10vh
   margin-right: 1vw
-  #itemList
-    margin-right: 7vw
 
-  #startedLot
-    margin-right: 7vw
+#itemList
+  margin-right: 7vw
+  overflow: auto
+  height: 50%
+
+#startedLot
+  display: none
+  overflow: auto
+  height: 50%
+  margin-top: 1%
+  border-top: 1px dashed black
+  padding-top: 1%
+
 
 .modal-field
   display: flex
@@ -109,3 +118,13 @@ button
   border-right: 1px solid white
   .col-sm:last-child
     border-right: none
+
+.mainNavBar
+  height: 6vh
+
+#contentView
+  display: flex
+  flex-direction: column
+  height: 94vh
+  overflow: auto
+
