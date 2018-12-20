@@ -1,6 +1,11 @@
+const DEFAULT_AUCTION_START_PRICE = 500;
+const DEFAULT_AUCTION_FINAL_PRICE = 50;
+const DEFAULT_AUCTION_PRICE_REDUCTION_TIME = 15;
+const DEFAULT_AUCTION_TOTAL_TIME = 20;
+const DEFAULT_ADD_USER_BALANCE = 1000;
+
 var loginModal = document.getElementById('login_modal');
 var registerModal = document.getElementById("registration_modal");
-var welcomeModal = document.getElementById("welcome_modal");
 var addItemModal = document.getElementById("addItem_modal");
 var startAuctionModal = document.getElementById("startAuction_modal");
 var editItemModal = document.getElementById("editItem_modal");
@@ -58,9 +63,6 @@ spanModalCloseLogin.onclick = function() {
 spanModalCloseRegistration.onclick = function() {
   registerModal.style.display = "none";
 };
-spanModalCloseWelcome.onclick = function() {
-  welcomeModal.style.display = "none";
-};
 spanModalCloseAddItem.onclick = function() {
   addItemModal.style.display = "none";
 };
@@ -71,13 +73,11 @@ spanModalCloseEditItem.onclick = function(){
 window.onclick = function(event) {
   if (event.target == loginModal ||
       event.target == registerModal ||
-      event.target == welcomeModal ||
       event.target == addItemModal ||
       event.target == startAuctionModal ||
       event.target == document.getElementById("editItem_modal")) {
     loginModal.style.display = "none";
     registerModal.style.display = "none";
-    welcomeModal.style.display = "none";
     addItemModal.style.display = "none";
     startAuctionModal.style.display = "none";
     document.getElementById("editItem_modal").style.display = "none";
@@ -103,51 +103,41 @@ class User {
 function loadLoginModal() {
   loginModal.style.display = "block";
   registerModal.style.display = "none";
-  welcomeModal.style.display = "none";
   document.getElementById("mainFooter").innerHTML = "";
 }
 
 
 function loadRegisterModal() {
   loginModal.style.display = "none";
-  welcomeModal.style.display = "none";
   registerModal.style.display = "block";
-}
-
-
-function loadWelcomeModal() {
-  loginModal.style.display = "none";
-  registerModal.style.display = "none";
-  welcomeModal.style.display = "block";
 }
 
 
 function loadAddItemModal() {
   loginModal.style.display = "none";
   registerModal.style.display = "none";
-  welcomeModal.style.display = "none";
   addItemModal.style.display = "block";
 }
 
 
-function cancelAddItem() {
+function cancelAddItemModal() {
   addItemModal.style.display = "none";
 }
 
 
-function cancelUserRegistration() {
+function cancelUserRegistrationModal() {
   registerModal.style.display = "none";
   loginModal.style.display = "block";
 }
 
 
-function cancelAuctionModal() {
+function cancelStartAuctionModal() {
   startAuctionModal.style.display = "none";
   pendingAuctionItemId = null;
 }
 
 
-function showEditItemModal(i) {
+function loadEditItemModal(i) {
   editItemModal.style.display = "block";
   pendingEditItemId = i;
   document.getElementById("editItemForm_name").value = currentUserItems[i].name;
@@ -156,15 +146,15 @@ function showEditItemModal(i) {
 }
 
 
-function showAuctionModal(i) {
+function loadStartAuctionModal(i) {
   startAuctionModal.style.display = "block";
   document.getElementById("startAuctionDetailes_name").value = currentUserItems[i].name;
   document.getElementById("startAuctionDetailes_description").value = currentUserItems[i].description;
   document.getElementById("startAuctionDetailes_item_image").src = currentUserItems[i].image;
-  document.getElementById("startAuctionDetailes_start_price").value = 500;
-  document.getElementById("startAuctionDetailes_final_price").value = 50;
-  document.getElementById("startAuctionDetailes_price_reduction_time").value = 15;
-  document.getElementById("startAuctionDetailes_auction_time").value = 20;
+  document.getElementById("startAuctionDetailes_start_price").value = DEFAULT_AUCTION_START_PRICE;
+  document.getElementById("startAuctionDetailes_final_price").value = DEFAULT_AUCTION_FINAL_PRICE;
+  document.getElementById("startAuctionDetailes_price_reduction_time").value = DEFAULT_AUCTION_PRICE_REDUCTION_TIME;
+  document.getElementById("startAuctionDetailes_auction_time").value = DEFAULT_AUCTION_TOTAL_TIME;
   pendingAuctionItemId = i;
 }
 
@@ -213,22 +203,22 @@ function handleLogin() {
     document.getElementById("buttonShowVariants").style.display = "block";
     document.getElementById("loginButton").style.display = "none";
     document.getElementById("itemList").style.display = "block";
-    document.getElementById("addUserFunds").style.display = "block";
+    document.getElementById("addUserBalance").style.display = "block";
     loginModal.style.display = "none";
     document.getElementById("loginButton").style.display = "none";
     document.getElementById("startedLot").style.display = "block";
     document.getElementById("galary_section").style.display = "none";
     document.getElementById("signUpButton").style.display = "none";
     
-    renderList(currentUserItems);
-    renderStartAuction(allAuctions);
+    renderItemsTable(currentUserItems);
+    renderAuctions(allAuctions);
     renderUserName();
-    renderFunds();
+    renderUserBalance();
   }
   else {
     //TODO Check, what type of error? Wrong password or username don't exist
     document.getElementById("mainFooter").innerHTML = "<div class=\"alert alert-primary\">Login error." +
-          " Please <span class=\"alert-link\" onclick=\"handleRegistration()\">Sign up</span></div>";
+          " Please <span class=\"alert-link\" onclick=\"handleUserRegistration()\">Sign up</span></div>";
   }
 }
 
@@ -245,25 +235,25 @@ function handleLogout() {
   document.getElementById("welcome_section_balance").style.display = "none";
   document.getElementById("buttonShowVariants").style.display = "none";
   document.getElementById("itemList").style.display = "none";
-  document.getElementById("addUserFunds").style.display = "none";
+  document.getElementById("addUserBalance").style.display = "none";
   document.getElementById("startedLot").style.display = "none";
   document.getElementById("galary_section").style.display = "block";
   document.getElementById("signUpButton").style.display = "block";
-  renderList(currentUserItems);
-  renderStartAuction(allAuctions);
+  renderItemsTable(currentUserItems);
+  renderAuctions(allAuctions);
 }
 
 
-function addFunds() {
+function addUserBalance() {
   if (currentUser != null) {
-    currentUser.balance += 1000;
-    renderFunds();
+    currentUser.balance += DEFAULT_ADD_USER_BALANCE;
+    renderUserBalance();
     renderUserName();
   }
 }
 
 
-function renderFunds() {
+function renderUserBalance() {
   if (currentUser != null) {
     document.getElementById("welcome_section_balance").innerHTML = "$" + toCurrencyString(currentUser.balance);
   }
@@ -272,13 +262,12 @@ function renderFunds() {
 
 function renderUserName() {
   if (currentUser != null) {
-    console.log(currentUser);
     document.getElementById("welcome_section_name").innerHTML = currentUser.name;
   }
 }
 
 
-function handleRegistration() {
+function handleUserRegistration() {
   loadRegisterModal();
 }
 
@@ -314,7 +303,7 @@ function handleUserCreation() {
 }
 
 
-function addItem() {
+function createItem() {
   var itemName = document.getElementById("addItemDetails_item_name").value;
   var itemDescription = document.getElementById("addItemDetails_description").value;
   var itemImage = pendingImageDataUrl;
@@ -324,17 +313,16 @@ function addItem() {
     "description":itemDescription,
     "image":itemImage
   });
-  renderList(currentUserItems);
+  renderItemsTable(currentUserItems);
 }
 
 
-function loadImageFile() {
+function addItemModal_loadImageFile() {
   var preview = document.getElementById('addItemDetails_previewImage');
   var file    = document.getElementById('addItemDetails_imageFile').files[0];
   var reader  = new FileReader();
   
   reader.addEventListener("load", function () {
-    console.log(reader.result);
     preview.src = reader.result;
     pendingImageDataUrl = reader.result;
   }, false);
@@ -345,11 +333,10 @@ function loadImageFile() {
 }
 
 
-function editItemLoadImageFile() {
+function editItemModal_loadImageFile() {
   var preview = document.getElementById('editItemForm_image');
   var file    = document.getElementById('editItemDetails_imageFile').files[0];
   var reader  = new FileReader();
-  
   reader.addEventListener("load", function () {
     preview.src = reader.result;
   }, false);
@@ -360,7 +347,7 @@ function editItemLoadImageFile() {
 }
 
 
-function getHeaderSortIndicator(tableName,fieldName) {
+function getTableHeaderSortIndicator(tableName, fieldName) {
   if (fieldName == sortInfo[tableName].sortedBy) {
     if (sortInfo[tableName].sortDirection == "ascending") {
       return " &#8595";
@@ -392,8 +379,7 @@ function getSortFunction(fieldName, direction) {
   };
 }
 
-function updateSortOrder(tableName, fieldName) {
-  console.log("updateSortOrder",tableName,fieldName);
+function updateTableSortOrder(tableName, fieldName) {
   if (sortInfo[tableName].sortedBy == fieldName) {
     if (sortInfo[tableName].sortDirection == "ascending") {
       sortInfo[tableName].sortDirection = "descending";
@@ -402,18 +388,17 @@ function updateSortOrder(tableName, fieldName) {
     }
   }
   sortInfo[tableName].sortedBy = fieldName;
-  // viewTable();
   if(tableName == "auctions"){
-    renderStartAuction(allAuctions);
+    renderAuctions(allAuctions);
   } else if (tableName == "items"){
-    renderList(currentUserItems);
+    renderItemsTable(currentUserItems);
   } else {
     console.log("Error. Incorrect table name when sorting", tableName, fieldName);
   }
 }
 
 
-function renderList(items) {
+function renderItemsTable(items) {
   if(filterText != ""){
     items = items.filter(function(obj) {
       return containsText(obj, filterText, ["image"]);
@@ -426,8 +411,8 @@ function renderList(items) {
   }
   var h = "<table class=\"w-100 table\">" ;
   h += "<thead class=\"thead-dark\"><tr>";
-  h += "<th class=\"text-center\" onclick='updateSortOrder(\"items\",\"name\")'>Item name" + getHeaderSortIndicator("items","name") + "</th>";
-  h += "<th class=\"text-center\" onclick='updateSortOrder(\"items\",\"description\")'>Description" + getHeaderSortIndicator("items","description") + "</th>";
+  h += "<th class=\"text-center\" onclick='updateTableSortOrder(\"items\",\"name\")'>Item name" + getTableHeaderSortIndicator("items","name") + "</th>";
+  h += "<th class=\"text-center\" onclick='updateTableSortOrder(\"items\",\"description\")'>Description" + getTableHeaderSortIndicator("items","description") + "</th>";
   h += "<th class=\"text-center\">Image</th>";
   h += "<th class=\"text-center\">Start auction</th>";
   h += "<th class=\"text-center\">Edit item</th>"
@@ -449,52 +434,52 @@ function renderList(items) {
     }
     h+= "<td class=\"text-center align-middle\"><button type='button' class='btn btn-primary' data-toggle='modal'" +
       " data-target='startAuction_modal'" +
-      " onclick=\"showAuctionModal("+i+")\">Start" +
+      " onclick=\"loadStartAuctionModal("+i+")\">Start" +
         " auction</button>";
-    h+= "<td class=\"text-center align-middle\"><button class='btn btn-info' onclick='showEditItemModal(" + i + ")'>Edit" +
+    h+= "<td class=\"text-center align-middle\"><button class='btn btn-info' onclick='loadEditItemModal(" + i + ")'>Edit" +
       " item</button>";
-    h+= "<td class=\"text-center align-middle\"><button class='btn btn-danger' onclick=\"deleteElementFromList("+i+")\">Delete" +
+    h+= "<td class=\"text-center align-middle\"><button class='btn btn-danger' onclick=\"deleteItemFromUserItems("+i+")\">Delete" +
       " item</button>";
   }
   document.getElementById("itemList").innerHTML = h;
 }
 
-function renderStartAuction(items) {
+function renderAuctions(items) {
   if(currentUser != null){
     console.log("Render auction as table");
-    renderAuctionAsTable(items);
+    renderAuctionsAsTable(items);
   } else {
     console.log("Render auction as galary");
-    renderAuctionAsGalary(items);
+    renderAuctionsAsGallery(items);
   }
 }
 
-function renderAuctionAsGalary(items) {
+function renderAuctionsAsGallery(auctions) {
   if(filterText != ""){
-    items = items.filter(function(obj) {
+    auctions = auctions.filter(function(obj) {
       return containsText(obj, filterText, ["image", "owner"]);
     });
   }
-  items = items.filter(function (x) {
+  auctions = auctions.filter(function (x) {
     return x.image != null && x.image.length > 50;
   });
   var numberRows = 2;
   var numberColumns = 3;
   var classNameInnerDiv = "galaryDiv";
   var classNameOuterDiv = "galaryDiv_Outer";
-  var numberRowsExisting = Math.floor(items.length/numberColumns);
-  if (items.length%numberColumns != 0){
+  var numberRowsExisting = Math.floor(auctions.length/numberColumns);
+  if (auctions.length%numberColumns != 0){
     numberRowsExisting += 1;
   }
   var h = "";
   const disableHighLight = filterText == "";
   for (var i = 0; i < Math.min(numberRows,numberRowsExisting); i+=1) {
     h += "<div class=\"" + classNameOuterDiv + "\">";
-     for (var j = i * numberColumns; j < Math.min((i+1)*numberColumns,items.length); j+=1){
+     for (var j = i * numberColumns; j < Math.min((i+1)*numberColumns,auctions.length); j+=1){
        h += "<div onclick=\"loadLoginModal()\" class=\""+classNameInnerDiv+"\">\n" +
-       "          <img src="+ items[j].image + " alt=\""+items[j].name+"\">\n" +
-       "          <p>" + highlightIfContainsText(items[j].name, filterText, disableHighLight) + "</p>\n" +
-         "<p>$ " + items[j].current_price + "</p>" +
+       "          <img src="+ auctions[j].image + " alt=\""+auctions[j].name+"\">\n" +
+       "          <p>" + highlightIfContainsText(auctions[j].name, filterText, disableHighLight) + "</p>\n" +
+         "<p>$ " + auctions[j].current_price + "</p>" +
        "        </div>\n"
      }
     h += "</div>";
@@ -502,63 +487,63 @@ function renderAuctionAsGalary(items) {
   document.getElementById("galary_section").innerHTML = h;
 }
 
-function renderAuctionAsTable(items) {
-  console.log("Item.length", items.length);
+function renderAuctionsAsTable(auctions) {
+  console.log("Item.length", auctions.length);
   if(filterText != ""){
-    items = items.filter(function(obj) {
+    auctions = auctions.filter(function(obj) {
       return containsText(obj, filterText, ["image", "description", "owner"]);
     });
-    console.log("Item.length", items.length);
+    console.log("Item.length", auctions.length);
   }
   if(sortInfo["auctions"].sortedBy != null){
-    items = items.slice();
-    items.sort(getSortFunction(sortInfo["auctions"].sortedBy, sortInfo["auctions"].sortDirection));
-    console.log("sort", items);
+    auctions = auctions.slice();
+    auctions.sort(getSortFunction(sortInfo["auctions"].sortedBy, sortInfo["auctions"].sortDirection));
+    console.log("sort", auctions);
   }
   var h = "<table class=\"w-100 table\">" ;
   h += "<thead class=\"thead-dark\"><tr>";
-  h += "<th class=\"text-center\" onclick='updateSortOrder(\"auctions\",\"name\")'>Item name" + getHeaderSortIndicator("auctions","name") + "</th>";
-  h += "<th class=\"text-center\" onclick='updateSortOrder(\"auctions\",\"description\")'>Description" + getHeaderSortIndicator("auctions","name") + "</th>";
-  h += "<th class=\"text-center\" onclick='updateSortOrder(\"auctions\",\"image\")'>Image" + getHeaderSortIndicator("auctions","name") + "</th>";
-  h += "<th class=\"text-center\" onclick='updateSortOrder(\"auctions\",\"left_time\")'>Time left" + getHeaderSortIndicator("auctions","left_time") + "</th>";
-  h += "<th class=\"text-center\" onclick='updateSortOrder(\"auctions\",\"current_price\")'>Current price" + getHeaderSortIndicator("auctions","current_price") + "</th>";
-  h += "<th class=\"text-center\" onclick='updateSortOrder(\"auctions\",\"minimal_price\")'>Minimal price" + getHeaderSortIndicator("auctions","minimal_price") + "</th>";
-  h += "<th class=\"text-center\" onclick='updateSortOrder(\"auctions\",\"duration\")'>Auction end time" + getHeaderSortIndicator("auctions","duration") + "</th>";
+  h += "<th class=\"text-center\" onclick='updateTableSortOrder(\"auctions\",\"name\")'>Item name" + getTableHeaderSortIndicator("auctions","name") + "</th>";
+  h += "<th class=\"text-center\" onclick='updateTableSortOrder(\"auctions\",\"description\")'>Description" + getTableHeaderSortIndicator("auctions","name") + "</th>";
+  h += "<th class=\"text-center\" onclick='updateTableSortOrder(\"auctions\",\"image\")'>Image" + getTableHeaderSortIndicator("auctions","name") + "</th>";
+  h += "<th class=\"text-center\" onclick='updateTableSortOrder(\"auctions\",\"left_time\")'>Time left" + getTableHeaderSortIndicator("auctions","left_time") + "</th>";
+  h += "<th class=\"text-center\" onclick='updateTableSortOrder(\"auctions\",\"current_price\")'>Current price" + getTableHeaderSortIndicator("auctions","current_price") + "</th>";
+  h += "<th class=\"text-center\" onclick='updateTableSortOrder(\"auctions\",\"minimal_price\")'>Minimal price" + getTableHeaderSortIndicator("auctions","minimal_price") + "</th>";
+  h += "<th class=\"text-center\" onclick='updateTableSortOrder(\"auctions\",\"duration\")'>Auction end time" + getTableHeaderSortIndicator("auctions","duration") + "</th>";
   if(currentUser != null){
     h += "<th class=\"text-center\">Stop auction</th>";
     h += "<th class=\"text-center\">Buy item</th>";
   }
   h += "<tbody>";
   const disableHighLight = filterText == "";
-  for (var i = 0; i < items.length; i++) {
+  for (var i = 0; i < auctions.length; i++) {
     h+= "<tr>";
-    h+= "<td class=\"text-center align-middle\">" + highlightIfContainsText(items[i].name, filterText, disableHighLight) + "</td>";
-    h+= "<td class=\"text-center align-middle\">" + highlightIfContainsText(items[i].description, filterText, disableHighLight) + "</td>";
+    h+= "<td class=\"text-center align-middle\">" + highlightIfContainsText(auctions[i].name, filterText, disableHighLight) + "</td>";
+    h+= "<td class=\"text-center align-middle\">" + highlightIfContainsText(auctions[i].description, filterText, disableHighLight) + "</td>";
   
-    if(items[i].image == null || items[i].image.length < 50 ){
-      h+= "<td class=\"text-center align-middle\">" + items[i].image + "</td>";
+    if(auctions[i].image == null || auctions[i].image.length < 50 ){
+      h+= "<td class=\"text-center align-middle\">" + auctions[i].image + "</td>";
     } else {
-      h+= "<td class=\"text-center align-middle\"><img src=\"" + items[i].image + "\" style=\"width:100px;height:100px;\"></td>";
+      h+= "<td class=\"text-center align-middle\"><img src=\"" + auctions[i].image + "\" style=\"width:100px;height:100px;\"></td>";
     }
-    h+= "<td class=\"text-center align-middle\">" + highlightIfContainsText(toHHMMSS(items[i].left_time), filterText, disableHighLight) + "</td>";
-    h+= "<td class=\"text-center align-middle\">" + highlightIfContainsText(toCurrencyString(items[i].current_price), filterText, disableHighLight) + "</td>";
-    h+= "<td class=\"text-center align-middle\">" + highlightIfContainsText(toCurrencyString(items[i].minimal_price), filterText, disableHighLight) + "</td>";
-    h+= "<td class=\"text-center align-middle\">" + highlightIfContainsText(toHHMMSS(items[i].duration), filterText, disableHighLight) + "</td>";
+    h+= "<td class=\"text-center align-middle\">" + highlightIfContainsText(toHHMMSS(auctions[i].left_time), filterText, disableHighLight) + "</td>";
+    h+= "<td class=\"text-center align-middle\">" + highlightIfContainsText(toCurrencyString(auctions[i].current_price), filterText, disableHighLight) + "</td>";
+    h+= "<td class=\"text-center align-middle\">" + highlightIfContainsText(toCurrencyString(auctions[i].minimal_price), filterText, disableHighLight) + "</td>";
+    h+= "<td class=\"text-center align-middle\">" + highlightIfContainsText(toHHMMSS(auctions[i].duration), filterText, disableHighLight) + "</td>";
     if(currentUser != null) {
-      if (currentUser != null && currentUser.id == items[i].owner.id){
+      if (currentUser != null && currentUser.id == auctions[i].owner.id){
         console.log("CurrentUser",currentUser);
-        console.log("Items [i] owner", items[i].owner);
+        console.log("Items [i] owner", auctions[i].owner);
       h += "<td class=\"text-center align-middle\"><button class=\"usrControl btn btn-danger\" onclick=\"stopAuction("+i+")\">Stop" +
           " auction</button></td>"; }
       else {
         h += "<td></td>";
       }
-      if (currentUser != null && !(currentUser.id == items[i].owner.id)){
+      if (currentUser != null && !(currentUser.id == auctions[i].owner.id)){
         var disableButton = "";
-        if (currentUser.balance < items[i].current_price){
+        if (currentUser.balance < auctions[i].current_price){
           disableButton = "disabled";
         }
-      h += "<td class=\"text-center align-middle\"><button class=\"usrControl btn btn-success\" onclick=\"buyItem("+i+")\"" + disableButton +">Buy item</button></td>";}
+      h += "<td class=\"text-center align-middle\"><button class=\"usrControl btn btn-success\" onclick=\"handleBuyItem("+i+")\"" + disableButton +">Buy item</button></td>";}
       else {
         h += "<td class=\"text-center align-middle\"></td>";
       }
@@ -567,7 +552,7 @@ function renderAuctionAsTable(items) {
   document.getElementById("startedLot").innerHTML = h;
 }
 
-function buyItem(i) {
+function handleBuyItem(i) {
   if (currentUser != null && currentUser.balance > allAuctions[i].current_price) {
     allAuctions[i].owner.balance += allAuctions[i].current_price;
     currentUser.balance -= allAuctions[i].current_price;
@@ -576,9 +561,9 @@ function buyItem(i) {
       "description" : allAuctions[i].description,
       "image" : allAuctions[i].image
     });
-    deleteElementFromAuction(i);
-    renderList(currentUserItems);
-    renderFunds();
+    deleteAuction(i);
+    renderItemsTable(currentUserItems);
+    renderUserBalance();
   }
 }
 
@@ -593,11 +578,9 @@ function startStopTimeButtonClick() {
 }
 
 function stepTime() {
-  console.log("Step time", isTimeRunning);
   if (!isTimeRunning){
     return;
   }
-  console.log("Stop time, continue processing");
   var areItemsChanged = false;
   for (var i =0; i < allAuctions.length; i++){
 
@@ -607,7 +590,6 @@ function stepTime() {
         var diff = (allAuctions[i].max_price - allAuctions[i].minimal_price)/(allAuctions[i].price_reduction);
         allAuctions[i].current_price -= diff;
       }
-
     }
     if (allAuctions[i].duration > 1) {
       allAuctions[i].duration -= 1;
@@ -618,23 +600,21 @@ function stepTime() {
         "description" : allAuctions[i].description,
         "image" : allAuctions[i].image,
       });
-      deleteElementFromAuction(i);
+      deleteAuction(i);
       areItemsChanged = true;
     }
   }
-
   if (areItemsChanged) {
-    renderList(currentUserItems);
+    renderItemsTable(currentUserItems);
   }
-  
-  renderStartAuction(allAuctions);
+  renderAuctions(allAuctions);
 }
 
-function startAuction() {
+function startAuctionModal_startAuction() {
   var name = document.getElementById("startAuctionDetailes_name").value;
   var description = document.getElementById("startAuctionDetailes_description").value;
   var image = document.getElementById("startAuctionDetailes_item_image").src;
-  var start_price = document.getElementById("startAuctionDetailes_start_price").value;;
+  var start_price = document.getElementById("startAuctionDetailes_start_price").value;
   var finish_price = document.getElementById("startAuctionDetailes_final_price").value;
   var price_reduction_time = document.getElementById("startAuctionDetailes_price_reduction_time").value;
   var auction_time = document.getElementById("startAuctionDetailes_auction_time").value;
@@ -650,8 +630,8 @@ function startAuction() {
     "minimal_price" : finish_price,
     "owner" : currentUser
   });
-  deleteElementFromList(pendingAuctionItemId);
-  renderStartAuction(allAuctions);
+  deleteItemFromUserItems(pendingAuctionItemId);
+  renderAuctions(allAuctions);
   startAuctionModal.style.display = "none";
 }
 
@@ -663,7 +643,7 @@ function editItemModalOk() {
   currentUserItems[pendingEditItemId].description = description;
   currentUserItems[pendingEditItemId].image = image;
   pendingEditItemId = null;
-  renderList(currentUserItems);
+  renderItemsTable(currentUserItems);
   editItemModal.style.display = "none";
 }
 
@@ -678,19 +658,19 @@ function stopAuction(i) {
     "description" : allAuctions[i].description,
     "image" : allAuctions[i].image
   });
-  deleteElementFromAuction(i);
-  renderStartAuction(allAuctions);
-  renderList(currentUserItems);
+  deleteAuction(i);
+  renderAuctions(allAuctions);
+  renderItemsTable(currentUserItems);
 }
 
-function deleteElementFromList(i) {
+function deleteItemFromUserItems(i) {
   currentUserItems.splice(i,1);
-  renderList(currentUserItems);
+  renderItemsTable(currentUserItems);
 }
 
-function deleteElementFromAuction(i) {
+function deleteAuction(i) {
   allAuctions.splice(i,1);
-  renderStartAuction(allAuctions);
+  renderAuctions(allAuctions);
 }
 
 function downloadStateButtonClick() {
@@ -734,9 +714,9 @@ function restoreStateFromData(data) {
   currentUserItems = _items;
   allAuctions = _activeList;
   currentUser = _currentUser;
-  renderList(currentUserItems);
-  renderStartAuction(allAuctions);
-  renderFunds();
+  renderItemsTable(currentUserItems);
+  renderAuctions(allAuctions);
+  renderUserBalance();
   renderUserName();
 }
 
@@ -800,8 +780,8 @@ function highlightIfContainsText(obj, text, disable) {
 
 function updateFilterText(text) {
   filterText = text;
-  renderList(currentUserItems);
-  renderStartAuction(allAuctions);
+  renderItemsTable(currentUserItems);
+  renderAuctions(allAuctions);
 }
 
 function toCurrencyString(x) {
@@ -830,7 +810,7 @@ function showAuctionTable() {
   document.getElementById("itemList").style.display = "none";
 }
 
-function showItemAuctionTable() {
+function showItemAndAuctionTable() {
   document.getElementById("startedLot").style.display = "block";
   document.getElementById("itemList").style.display = "block";
 }
@@ -838,7 +818,7 @@ function showItemAuctionTable() {
 
 function initialSetup() {
   document.getElementById("logoutButton").style.display = "none";
-  document.getElementById("addUserFunds").style.display = "none";
+  document.getElementById("addUserBalance").style.display = "none";
   document.getElementById("welcome_section").style.display = "none";
   document.getElementById("welcome_section_name").style.display = "none";
   document.getElementById("welcome_section_balance").style.display = "none";
@@ -847,7 +827,7 @@ function initialSetup() {
   
   setInterval(function () {
     stepTime();
-    // renderStartAuction(allAuctions);
+    // renderAuctions(allAuctions);
   }, 1000);
   
   document.getElementById('restoreStateFromFile').addEventListener('change', readStateDataFile, false);
