@@ -22,10 +22,8 @@ var isTimeRunning = true;
 var logoutButton = document.getElementById("logoutButton").style.display = "none";
 var addFundsButton = document.getElementById("addUserFunds").style.display = "none";
 var welcomeUserInfoSection = document.getElementById("welcome_section").style.display = "none";
-// var welcomeSectionUserName = document.getElementById("welcome_section_name").style.display = "none";
-// var welcomeSectionUserBalance = document.getElementById("welcome_section_balance").style.display = "none";
-// var welcomeNameSection = document.getElementById("welcome_balance_section").style.display = "none";
-// var welcomeBalanceSection = document.getElementById("welcome_name_section").style.display = "none";
+var welcomeSectionUserName = document.getElementById("welcome_section_name").style.display = "none";
+var welcomeSectionUserBalance = document.getElementById("welcome_section_balance").style.display = "none";
 var addItemUserButton = document.getElementById("addItemButton").style.display = "none";
 var buttonShowVariants = document.getElementById("buttonShowVariants").style.display = "none";
 
@@ -177,11 +175,10 @@ function handleLogin() {
     itemsList = currentUser.items;
     document.getElementById("logoutButton").style.display = "block";
     document.getElementById("addItemButton").style.display = "block";
-    document.getElementById("welcome_section").style.display = "flex";
+    document.getElementById("welcome_section").style.display = "";
     
-    // document.getElementById("welcome_section_name").style.display = "block";
-    // document.getElementById("welcome_section_balance").style.display = "block";
-    // welcomeNameSection.style.display = "block";
+    document.getElementById("welcome_section_name").style.display = "";
+    document.getElementById("welcome_section_balance").style.display = "";
     document.getElementById("buttonShowVariants").style.display = "block";
     
     var un = document.getElementById("loginForm_login").value;
@@ -215,8 +212,8 @@ function handleLogout() {
   document.getElementById("loginButton").style.display = "block";
   document.getElementById("welcome_section").style.display = "none";
   
-  // document.getElementById("welcome_section_name").style.display = "none";
-  // document.getElementById("welcome_section_balance").style.display = "none";
+  document.getElementById("welcome_section_name").style.display = "none";
+  document.getElementById("welcome_section_balance").style.display = "none";
   document.getElementById("buttonShowVariants").style.display = "none";
   
   document.getElementById("itemList").style.display = "none";

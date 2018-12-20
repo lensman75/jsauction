@@ -221,100 +221,233 @@
     </div>
   </div>
   
+  
+  
+  
+  
   <!--NavBar-->
-  <nav class=" fixed-top navbar navbar-expand-lg navbar-dark bg-dark">
-    <!--<div class="container">-->
-  
-    <!--To right-->
+  <!--<nav class=" fixed-top navbar navbar-expand-lg navbar-dark bg-dark">-->
+    <!--&lt;!&ndash;<div class="container">&ndash;&gt;-->
+  <!---->
+    <!--&lt;!&ndash;To right&ndash;&gt;-->
+    <!--&lt;!&ndash;<div class="ml-auto">&ndash;&gt;-->
+  <!---->
+    <!--&lt;!&ndash;To center&ndash;&gt;-->
+    <!--&lt;!&ndash;<div class="m-auto">&ndash;&gt;-->
+    <!---->
     <!--<div class="ml-auto">-->
-  
-    <!--To center-->
-    <!--<div class="m-auto">-->
-    
-    <div class="ml-auto">
-      <div class="row align-items-center w-100 text-center">
+      <!--<div class="row align-items-center w-100 text-center">-->
+        <!--&lt;!&ndash;<div class="col-sm">&ndash;&gt;-->
+          <!--&lt;!&ndash;<button id="addItemButton" class="btn btn-outline-warning" onclick="loadAddItemModal()">addItem</button>&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+  <!---->
+        <!--&lt;!&ndash; Example single danger button &ndash;&gt;-->
+        <!--&lt;!&ndash;<div id="buttonShowVariants" class="btn-group col-sm">&ndash;&gt;-->
+          <!--&lt;!&ndash;<button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">&ndash;&gt;-->
+            <!--&lt;!&ndash;Show&ndash;&gt;-->
+          <!--&lt;!&ndash;</button>&ndash;&gt;-->
+          <!--&lt;!&ndash;<div class="dropdown-menu">&ndash;&gt;-->
+            <!--&lt;!&ndash;<a href = "#" class="dropdown-item text-center" onclick="showMyItemTable()">My items</a>&ndash;&gt;-->
+            <!--&lt;!&ndash;<a href = "#" class="dropdown-item text-center" onclick="showAuctionTable()">Auctions</a>&ndash;&gt;-->
+            <!--&lt;!&ndash;<a href = "#" class="dropdown-item text-center" onclick="showItemAuctionTable()">All</a>&ndash;&gt;-->
+            <!--&lt;!&ndash;&lt;!&ndash;<a href = "#" class="dropdown-item text-center">Item gallery</a>&ndash;&gt;&ndash;&gt;-->
+          <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!---->
+        <!--&lt;!&ndash; Example single danger button &ndash;&gt;-->
+        <!--&lt;!&ndash;<div id="buttonAuctionVariants" class="btn-group col-sm">&ndash;&gt;-->
+          <!--&lt;!&ndash;<button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">&ndash;&gt;-->
+            <!--&lt;!&ndash;Auction&ndash;&gt;-->
+          <!--&lt;!&ndash;</button>&ndash;&gt;-->
+          <!--&lt;!&ndash;<div class="dropdown-menu">&ndash;&gt;-->
+            <!--&lt;!&ndash;<a href = "#" class="dropdown-item text-center">All auctions</a>&ndash;&gt;-->
+            <!--&lt;!&ndash;<a href = "#" class="dropdown-item text-center">My auctions</a>&ndash;&gt;-->
+            <!--&lt;!&ndash;<a href = "#" class="dropdown-item text-center">History</a>&ndash;&gt;-->
+          <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!---->
         <!--<div class="col-sm">-->
-          <!--<button id="addItemButton" class="btn btn-outline-warning" onclick="loadAddItemModal()">addItem</button>-->
+          <!--&lt;!&ndash;<button id="downloadStateButton" class="btn btn-outline-warning" onclick="downloadStateButtonClick()">Save&ndash;&gt;-->
+            <!--&lt;!&ndash;state</button>&ndash;&gt;-->
         <!--</div>-->
-  
-        <!-- Example single danger button -->
-        <div id="buttonShowVariants" class="btn-group col-sm">
-          <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Show
-          </button>
-          <div class="dropdown-menu">
-            <a href = "#" class="dropdown-item text-center" onclick="showMyItemTable()">My items</a>
-            <a href = "#" class="dropdown-item text-center" onclick="showAuctionTable()">Auctions</a>
-            <a href = "#" class="dropdown-item text-center" onclick="showItemAuctionTable()">All</a>
-            <!--<a href = "#" class="dropdown-item text-center">Item gallery</a>-->
+
+        <!--<div class="col-sm">-->
+          <!--&lt;!&ndash;<input id="restoreStateFromFile" type="file" style="display:none;" />&ndash;&gt;-->
+          <!--&lt;!&ndash;<input type="button" class="btn btn-outline-warning" value="Restore state"&ndash;&gt;-->
+            <!--&lt;!&ndash;onclick="document.getElementById('restoreStateFromFile').click();" />&ndash;&gt;-->
+
+        <!--</div>-->
+
+        <!--<div class="col-sm">-->
+          <!--&lt;!&ndash;<button id="startStopTimeButton" class="btn btn-outline-warning" onclick="startStopTimeButtonClick()">Stop</button>&ndash;&gt;-->
+        <!--</div>-->
+        <!---->
+        <!--<div class="col-sm-2">-->
+          <!--<form class="form-inline my-2 my-lg-0 w-100">-->
+            <!--&lt;!&ndash;<input class="form-control mr-sm-2 w-100" type="search" placeholder="Search" aria-label="Search"&ndash;&gt;-->
+              <!--&lt;!&ndash;oninput="updateFilterText(this.value)" id="search-input">&ndash;&gt;-->
+          <!--</form>-->
+        <!--</div>-->
+  <!---->
+        <!--<div class="col-sm">-->
+          <!--&lt;!&ndash;<button id="addItemButton" class="btn btn-outline-warning" onclick="loadAddItemModal()">Add item</button>&ndash;&gt;-->
+        <!--</div>-->
+        <!---->
+        <!--<div class="col-sm" id="welcome_section">-->
+          <!--&lt;!&ndash;<p class="p-3 mb-2 bg-success text-white" id="welcome_section_name"></p>&ndash;&gt;-->
+          <!--&lt;!&ndash;<p class="p-3 mb-2 bg-success text-white" id="welcome_section_balance"></p>&ndash;&gt;-->
+        <!--</div>-->
+        <!---->
+        <!--<div class="col-sm">-->
+          <!--&lt;!&ndash;<button type="button" class="btn btn-outline-success" onclick="addFunds()" id="addUserFunds">Add funds&ndash;&gt;-->
+          <!--&lt;!&ndash;</button>&ndash;&gt;-->
+        <!--</div>-->
+  <!---->
+        <!--<div class="col-sm">-->
+          <!--&lt;!&ndash;<button type="button" class="w-100 btn btn-outline-primary" onclick="loadRegisterModal()"id="signUpButton">&ndash;&gt;-->
+            <!--&lt;!&ndash;SignUp</button>&ndash;&gt;-->
+        <!--</div>-->
+
+        <!--<div class="col-sm text-right w-100">-->
+          <!--&lt;!&ndash;<button type="button" class="w-100 btn btn-outline-primary" onclick="loadLoginModal()" id="loginButton">Login&ndash;&gt;-->
+          <!--&lt;!&ndash;</button>&ndash;&gt;-->
+          <!--&lt;!&ndash;<button type="button" class="w-100 btn btn-outline-danger" onclick="handleLogout()" id="logoutButton">Logout&ndash;&gt;-->
+          <!--&lt;!&ndash;</button>&ndash;&gt;-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
+  <!--</nav>-->
+  <!--End of navbar-->
+
+
+
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+    <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <div id="buttonShowVariants">
+            <button type="button" class="btn btn-danger dropdown-toggle w-100" data-toggle="dropdown" aria-haspopup="true"
+              aria-expanded="false">
+              Show
+            </button>
+            <div class="dropdown-menu bg-dark ">
+              <button id="addItemButton1" class="btn btn-outline-info w-100" onclick="showMyItemTable()">My
+                items</button>
+              <button id="addItemButton2" class="btn btn-outline-info w-100" onclick="showAuctionTable()">Auctions
+              </button>
+              <button id="addItemButton3" class="btn btn-outline-info w-100" onclick="showItemAuctionTable()">All
+              </button>
+              <!--<a href = "#" class="dropdown-item text-center btn btn-outline-warning" onclick="showMyItemTable()">My items</a>-->
+              <!--<a href = "#" class="dropdown-item text-center btn btn-outline-warning" onclick="showAuctionTable()">Auctions</a>-->
+              <!--<a href = "#" class="dropdown-item text-center btn btn-outline-warning" onclick="showItemAuctionTable()">All</a>-->
+              <!--<a href = "#" class="dropdown-item text-center">Item gallery</a>-->
+            </div>
           </div>
-        </div>
-        
-        <!-- Example single danger button -->
-        <!--<div id="buttonAuctionVariants" class="btn-group col-sm">-->
-          <!--<button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
-            <!--Auction-->
-          <!--</button>-->
-          <!--<div class="dropdown-menu">-->
-            <!--<a href = "#" class="dropdown-item text-center">All auctions</a>-->
-            <!--<a href = "#" class="dropdown-item text-center">My auctions</a>-->
-            <!--<a href = "#" class="dropdown-item text-center">History</a>-->
-          <!--</div>-->
-        <!--</div>-->
-        
-        <div class="col-sm">
-          <button id="downloadStateButton" class="btn btn-outline-warning" onclick="downloadStateButtonClick()">Save
-            state</button>
-        </div>
-
-        <div class="col-sm">
-          <input id="restoreStateFromFile" type="file" style="display:none;" />
-          <input type="button" class="btn btn-outline-warning" value="Restore state"
-            onclick="document.getElementById('restoreStateFromFile').click();" />
-
-        </div>
-
-        <div class="col-sm">
-          <button id="startStopTimeButton" class="btn btn-outline-warning" onclick="startStopTimeButtonClick()">Stop</button>
-        </div>
-        
-        <div class="col-sm-2">
-          <form class="form-inline my-2 my-lg-0 w-100">
-            <input class="form-control mr-sm-2 w-100" type="search" placeholder="Search" aria-label="Search"
-              oninput="updateFilterText(this.value)" id="search-input">
-          </form>
-        </div>
+        </li>
+        <li class="nav-item">
+          <button id="addItemButton" class="btn btn-outline-warning w-100" onclick="loadAddItemModal()">Add item</button>
+        </li>
+      </ul>
+    </div>
   
-        <div class="col-sm">
-          <button id="addItemButton" class="btn btn-outline-warning" onclick="loadAddItemModal()">Add item</button>
-        </div>
-        
-        <div class="col-sm" id="welcome_section">
-          <p class="p-3 mb-2 bg-success text-white" id="welcome_section_name"></p>
-          <p class="p-3 mb-2 bg-success text-white" id="welcome_section_balance"></p>
-        </div>
-        
-        <div class="col-sm">
-          <button type="button" class="btn btn-outline-success" onclick="addFunds()" id="addUserFunds">Add funds
+    <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <button id = "startStopTimeButton" class = "btn btn-outline-warning w-100" onclick =
+            "startStopTimeButtonClick()">Stop</button>
+        </li>
+        <li class="nav-item">
+          <button id = "downloadStateButton" class = "btn btn-outline-warning w-100" onclick =
+            "downloadStateButtonClick()">Save
+            state
           </button>
-        </div>
+        </li>
+        <li class="nav-item">
+          <input id = "restoreStateFromFile" type = "file" style = "display:none;"/>
+          <input type = "button" class = "btn btn-outline-warning w-100" value = "Restore state" onclick =
+            "document.getElementById('restoreStateFromFile').click();"/>
+        </li>
   
-        <div class="col-sm">
+        <li class="nav-item">
+          <input class = "mx-auto" type = "search" placeholder = "Search" aria-label = "Search" oninput =
+            "updateFilterText(this.value)" id = "search-input"
+        ></li>
+      </ul>
+    </div>
+    
+    
+    <div class="mx-auto order-0 w-100">
+      <!--<a class="navbar-brand mx-auto" href="#">Navbar 2</a>-->
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".dual-collapse2">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </div>
+  
+    
+    <!--<div  id="welcome_section" class="navbar-collapse collapse w-100 order-3 dual-collapse3">-->
+      <!--<ul class="navbar-nav ml-auto w-100">-->
+        <!--&lt;!&ndash;<li class="nav-item">&ndash;&gt;-->
+          <!--&lt;!&ndash;<div class="w-100" style="display: flex; flex-direction: row; justify-content: space-between">&ndash;&gt;-->
+            <!--&lt;!&ndash;<div class = "text-white text-center" id = "welcome_section_name"></div>&ndash;&gt;-->
+            <!--&lt;!&ndash;<div class = "text-white text-center" id = "welcome_section_balance"></div>&ndash;&gt;-->
+          <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--&lt;!&ndash;</li>&ndash;&gt;-->
+        <!--<li class="nav-item">-->
+          <!--<button type="button" class="w-100 btn btn-outline-success" onclick="addFunds()"-->
+          <!--id="addUserFunds">Add funds-->
+        <!--</button></li>-->
+      <!--</ul>-->
+    <!--</div>-->
+  
+  
+    <div id="welcome_section" class="navbar-collapse collapse w-100 order-4 dual-collapse2">
+      <ul class="navbar-nav ml-auto">
+  
+        <li class="nav-item">
+          <div class="w-100" style="display: flex; flex-direction: row; justify-content: space-between">
+            <div class="text-white text-center" id="welcome_section_name">vasya</div>
+            <div class="text-white text-center" id="welcome_section_balance">100</div>
+          </div>
+        </li>
+        
+        
+        
+        <li class="nav-item">
+          <button type="button" class="w-100 btn btn-outline-success" onclick="addFunds()" id="addUserFunds">Add
+          funds</button>
+        </li>
+    
+      </ul>
+    </div>
+    
+    
+    
+    
+    
+    <div class="navbar-collapse collapse w-100 order-4 dual-collapse2">
+      <ul class="navbar-nav ml-auto">
+        
+        <li class="nav-item">
           <button type="button" class="w-100 btn btn-outline-primary" onclick="loadRegisterModal()"id="signUpButton">
             SignUp</button>
-        </div>
-
-        <div class="col-sm text-right w-100">
+        </li>
+        
+        <li class="nav-item">
           <button type="button" class="w-100 btn btn-outline-primary" onclick="loadLoginModal()" id="loginButton">Login
           </button>
           <button type="button" class="w-100 btn btn-outline-danger" onclick="handleLogout()" id="logoutButton">Logout
           </button>
-        </div>
-      </div>
+        </li>
+        
+      </ul>
     </div>
+    
   </nav>
-  <!--End of navbar-->
-
+  
+  
+  
+  
+  
   <section id="galaryBeforeLogin_section">
   </section>
 
@@ -330,5 +463,7 @@
   <script src="script/main.js"></script>
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+ 
+  </div>
 </body>
 </html>
