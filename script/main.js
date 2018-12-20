@@ -200,6 +200,8 @@ function handleLogin() {
     document.getElementById("welcome_section").style.display = "";
     document.getElementById("welcome_section_name").style.display = "";
     document.getElementById("welcome_section_balance").style.display = "";
+    document.getElementById("welcomeSectionMenuDivider").style.display = "";
+    document.getElementById("loggedBlockMenuDivider").style.display = "";
     document.getElementById("buttonShowVariants").style.display = "block";
     document.getElementById("loginButton").style.display = "none";
     document.getElementById("itemList").style.display = "block";
@@ -233,6 +235,8 @@ function handleLogout() {
   document.getElementById("welcome_section").style.display = "none";
   document.getElementById("welcome_section_name").style.display = "none";
   document.getElementById("welcome_section_balance").style.display = "none";
+  document.getElementById("welcomeSectionMenuDivider").style.display = "none";
+  document.getElementById("loggedBlockMenuDivider").style.display = "none";
   document.getElementById("buttonShowVariants").style.display = "none";
   document.getElementById("itemList").style.display = "none";
   document.getElementById("addUserBalance").style.display = "none";
