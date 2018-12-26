@@ -84,6 +84,23 @@ window.onclick = function(event) {
   }
 };
 
+//HandleButtonLogin
+var loginFormKey = document.getElementById("loginForm_password");
+loginFormKey.addEventListener("keyup",function (event) {
+  event.preventDefault();
+  if(event.keyCode === 13) {
+    document.getElementById("loginForm_click").click();
+  }
+});
+
+var registerFormKey = document.getElementById("userRegistrationForm_password_repeat");
+registerFormKey.addEventListener("keyup", function (event) {
+  event.preventDefault();
+  if(event.keyCode === 13) {
+    document.getElementById("registerForm_click").click();
+  }
+});
+
 
 class User {
   constructor(name, password) {
