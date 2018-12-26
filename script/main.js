@@ -306,17 +306,20 @@ function handleUserCreation() {
       }
 }
 
+class Item{
+  constructor (itemName,itemDescription,itemImage){
+    this.name = itemName;
+    this.description = itemDescription;
+    this.image = itemImage;
+  }
+}
 
 function createItem() {
   var itemName = document.getElementById("addItemDetails_item_name").value;
   var itemDescription = document.getElementById("addItemDetails_description").value;
   var itemImage = pendingImageDataUrl;
   pendingImageDataUrl = null;
-  currentUserItems.push({
-    "name":itemName,
-    "description":itemDescription,
-    "image":itemImage
-  });
+  currentUserItems.push(new Item(itemName,itemDescription,itemImage));
   renderItemsTable(currentUserItems);
 }
 
@@ -606,6 +609,21 @@ function stepTime() {
   renderAuctions(allAuctions);
 }
 
+class Auction{
+  constructor(name, description, image, start_price, price_reduction_time, auction_time, finish_price, currentUser){
+    this.name = name;
+    this.description = description;
+    this.image = image;
+    this.current_price = start_price;
+    this.left_time = price_reduction_time;
+    this.duration = auction_time;
+    this.price_reduction = price_reduction_time;
+    this.max_price = start_price;
+    this.minimal_price = finish_price;
+    this.owner = currentUser;
+  }
+}
+
 function startAuctionModal_startAuction() {
   var name = document.getElementById("startAuctionDetailes_name").value;
   var description = document.getElementById("startAuctionDetailes_description").value;
@@ -646,18 +664,7 @@ function startAuctionModal_startAuction() {
     alert(err);
     return;
   }
-  allAuctions.push({
-    "name": name,
-    "description": description,
-    "image": image,
-    "current_price" : start_price,
-    "left_time" : price_reduction_time,
-    "duration" : auction_time,
-    "price_reduction" : price_reduction_time,
-    "max_price" : start_price,
-    "minimal_price" : finish_price,
-    "owner" : currentUser
-  });
+  allAuctions.push(new Auction(name, description, image, start_price, price_reduction_time, auction_time, finish_price, currentUser));
   deleteItemFromUserItems(pendingAuctionItemId);
   renderAuctions(allAuctions);
   startAuctionModal.style.display = "none";
