@@ -1,6 +1,7 @@
 body {
   width: 100vw;
-  height: 90vh; }
+  height: 90vh;
+}
 
 .modal {
   display: none;
@@ -13,41 +14,53 @@ body {
   height: 100%;
   overflow: auto;
   background-color: black;
-  background-color: rgba(0, 0, 0, 0.4); }
+  background-color: rgba(0, 0, 0, 0.4);
+}
 
 .modal-content {
   background-color: #fefefe;
   margin: auto;
   padding: 20px;
   border: 1px solid #888;
-  width: 80%; }
+  width: 80%;
+}
 
 .modal-reg {
-  display: none; }
+  display: none;
+}
 
 /* The Close Button */
 .close {
   color: #aaaaaa;
   float: right;
   font-size: 28px;
-  font-weight: bold; }
+  font-weight: bold;
+}
 
 .close:hover,
 .close:focus {
   color: #000;
   text-decoration: none;
-  cursor: pointer; }
+  cursor: pointer;
+}
 
 #lotList {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
   flex-direction: column;
   margin-top: 10vh;
-  margin-right: 1vw; }
+  margin-right: 1vw;
+}
 
 #itemList {
   margin-right: 7vw;
   overflow: auto;
-  height: 50%; }
+  height: 50%;
+}
 
 #startedLot {
   display: none;
@@ -55,94 +68,165 @@ body {
   height: 50%;
   margin-top: 1%;
   border-top: 1px dashed black;
-  padding-top: 1%; }
+  padding-top: 1%;
+}
 
 .modal-field {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  flex-direction: column; }
-  .modal-field label, .modal-field input {
-    margin: 3px; }
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
 
-table, th, tbody, tr, td {
+.modal-field label,
+.modal-field input {
+  margin: 3px;
+}
+
+table,
+th,
+tbody,
+tr,
+td {
   border-collapse: collapse;
-  border: 1px solid mediumpurple; }
+  border: 1px solid mediumpurple;
+}
 
 #startAuction_modal {
-  overflow-y: scroll; }
+  overflow-y: scroll;
+}
 
 button {
-  margin-right: 5px; }
+  margin-right: 5px;
+}
 
 .search-highlight {
-  background-color: yellow; }
+  background-color: yellow;
+}
 
 .galaryDiv {
   height: 300px;
   width: 300px;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
   justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
   flex-direction: column;
   border: 1px solid black;
   border-radius: 0.5vw;
   margin-top: 1vw;
   padding-bottom: 0.5vw;
-  padding-top: 0.5vw; }
-  .galaryDiv img {
-    width: 280px;
-    height: 280px; }
-  .galaryDiv p {
-    margin-bottom: 4px; }
+  padding-top: 0.5vw;
+}
+
+.galaryDiv img {
+  width: 280px;
+  -o-object-fit: contain;
+  object-fit: contain;
+}
+
+.galaryDiv p {
+  margin-bottom: 4px;
+}
 
 #galary_section {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  flex-direction: column; }
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
 
 .galaryDiv_Outer {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: row;
   flex-direction: row;
-  justify-content: space-around; }
+  -ms-flex-pack: distribute;
+  justify-content: space-around;
+}
 
 #welcome_section {
   border-radius: 10px;
-  border-right: none; }
+  border-right: none;
+}
 
 #welcome_section_balance {
   margin-left: 5px;
-  border-radius: 10px; }
+  border-radius: 10px;
+}
 
 #welcome_section_name {
-  border-radius: 10px; }
+  border-radius: 10px;
+}
 
 .col-sm {
-  border-right: 1px solid white; }
-  .col-sm .col-sm:last-child {
-    border-right: none; }
+  border-right: 1px solid white;
+}
+
+.col-sm .col-sm:last-child {
+  border-right: none;
+}
 
 .mainNavBar {
-  height: 6vh; }
+  height: 6vh;
+}
 
 #contentView {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
   flex-direction: column;
   height: 94vh;
-  overflow: auto; }
+  overflow: auto;
+}
 
 .myMenuDivider {
   height: 1px;
   width: 100%;
-  border: 1px solid white; }
+  border: 1px solid white;
+}
 
 .myDividerSeparator {
-  height: 0.33vh; }
+  height: 0.33vh;
+}
 
-@media screen and (min-width: 768px) {
+@media screen and (max-width: 768px) {
   .myMenuDivider {
     width: 1px;
     height: 100%;
-    border: 1px solid white; }
-
+    border: 1px solid white;
+  }
   .myDividerSeparator {
-    width: 0.33vw; } }
-
+    width: 0.33vw;
+  }
+  .galaryDiv_Outer {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+  }
+  #galary_section {
+    margin: auto;
+  }
+}
 /*# sourceMappingURL=custom.css.map */

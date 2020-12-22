@@ -2,7 +2,6 @@ body
   width: 100vw
   height: 90vh
 
-
 .modal
   display: none /* Hidden by default */
   position: fixed /* Stay in place */
@@ -58,7 +57,6 @@ body
   border-top: 1px dashed black
   padding-top: 1%
 
-
 .modal-field
   display: flex
   flex-direction: column
@@ -92,7 +90,8 @@ button
   padding-top: 0.5vw
   img
     width: 280px
-    height: 280px
+    // height: 280px
+    object-fit: contain
   p
     margin-bottom: 4px
 
@@ -136,7 +135,7 @@ button
 .myDividerSeparator
   height: 0.33vh
 
-@media screen and (min-width: 768px)
+@media screen and (max-width: 768px)
   .myMenuDivider
     width: 1px
     height: 100%
@@ -144,3 +143,9 @@ button
 
   .myDividerSeparator
     width: 0.33vw
+
+  .galaryDiv_Outer
+    flex-direction: column
+
+  #galary_section
+    margin: auto
